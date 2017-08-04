@@ -1,24 +1,24 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Plot heatmap of all effects
 #'
 #' @export
-plot_combined_effects <- function(dat, scale = TRUE){
+plot_combined_effects <- function(dat, scale = TRUE, cluster = TRUE, standardize = FALSE){
 
   # Add codition name var
   dat <- lapply(dat, wheelP:::add_condition)
@@ -29,13 +29,31 @@ plot_combined_effects <- function(dat, scale = TRUE){
   colnames(tab) <- paste( rep(names(dat),each = 4),
                           colnames(tab),sep = ".")
 
+  if(cluster == TRUE){
+    heat.dendrogram <- "row"
+    heat.rowv <- TRUE
+  }else{
+    heat.dendrogram <- "none"
+    heat.rowv <- FALSE
+    data(wheelP.rna)
+    syncoms <- levels(wheelP.rna$Map$Bacteria)
+    syncoms <- syncoms[ syncoms != "No Bacteria"]
+    tab <- tab[ syncoms, ]
+  }
+
+  if(standardize == TRUE){
+    scale.center <- TRUE
+  }else{
+    scale.center <- FALSE
+  }
+
   # Plot
   pal <- colorRampPalette(colors = c("#8e0152","#de77ae",
                                      "#f7f7f7","#7fbc41","#276419"))
   #tiff("heatmap_syncom_effects.tif",width = 2000, height = 1500, res = 250)
-  heatmap.2(x = scale(tab, center = FALSE, scale = scale),
+  heatmap.2(x = scale(tab, center = scale.center, scale = scale), Rowv = heat.rowv,
             main = "Scaled SynCom effects\non plant phenotypes",
-            dendrogram = "row", trace = "none", col = pal(50),
+            dendrogram = heat.dendrogram, trace = "none", col = pal(50),
             margins = c(12,5), Colv = FALSE)
   #dev.off()
 

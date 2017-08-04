@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -48,7 +48,7 @@ wheel$Bacteria[ wheel$Bacteria == "SC5" ] <- "I2I3"
 wheel$Bacteria[ wheel$Bacteria == "SC6" ] <- "I3N1"
 wheel$Bacteria[ wheel$Bacteria == "SC7" ] <- "N1N2"
 wheel$Bacteria[ wheel$Bacteria == "SC8" ] <- "N2N3"
-wheel$Bacteria[ wheel$Bacteria == "SC9" ] <- "N3P1"
+wheel$Bacteria[ wheel$Bacteria == "SC9" ] <- "P1N3"
 wheel$Bacteria[ wheel$Bacteria == "SC10" ] <- "P1I1"
 wheel$Bacteria[ wheel$Bacteria == "SC11" ] <- "P2I1"
 wheel$Bacteria[ wheel$Bacteria == "SC12" ] <- "P1P3"
@@ -400,7 +400,7 @@ write.table(Dat,"metadadata_full.txt", sep = "\t",
             quote = FALSE)
 Map.colonization <- Dat
 devtools::use_data(Map.colonization,
-                   pkg = "~/rhizogenomics/src/trunk/phosphate_code/wheelP/",
+                   pkg = "~/rhizogenomics/github/wheelP/",
                    overwrite = TRUE)
 head(Dat)
 
@@ -439,7 +439,7 @@ Tax$Type <- factor(Tax$Type,
 
 Tax.colonization <- Tax
 devtools::use_data(Tax.colonization,
-                   pkg = "~/rhizogenomics/src/trunk/phosphate_code/wheelP/",
+                   pkg = "~/rhizogenomics/github/wheelP/",
                    overwrite = TRUE)
 write.table(Tax.colonization,
             file = "Taxonomy.txt",sep = "\t", col.names = NA, row.names = TRUE,

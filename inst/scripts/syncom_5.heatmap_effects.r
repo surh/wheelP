@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -19,20 +19,40 @@ library(wheelP)
 library(reshape2)
 library(gplots)
 
-# setwd("~/rhizogenomics/experiments/2017/today4/")
+setwd("~/rhizogenomics/experiments/2017/today4/syncom/")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 
 # Read data
-Elongation <- read.table("elongation_single_community_test.txt", header = TRUE, sep = "\t")
-Area <- read.table("area_single_community_test.txt", header = TRUE, sep = "\t")
-Pi <- read.table("pi_single_community_test.txt", header = TRUE, sep = "\t")
-Totalroot <- read.table("totalroot_single_community_test.txt", header = TRUE, sep = "\t")
+# Elongation <- read.table("elongation_single_community_test.txt", header = TRUE, sep = "\t")
+# Area <- read.table("area_single_community_test.txt", header = TRUE, sep = "\t")
+# Pi <- read.table("pi_single_community_test.txt", header = TRUE, sep = "\t")
+# Totalroot <- read.table("totalroot_single_community_test.txt", header = TRUE, sep = "\t")
 
+Elongation <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/elongation_single_community_test.txt", header = TRUE, sep = "\t")
+Area <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/area_single_community_test.txt", header = TRUE, sep = "\t")
+Pi <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/pi_single_community_test.txt", header = TRUE, sep = "\t")
+Totalroot <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/totalroot_single_community_test.txt", header = TRUE, sep = "\t")
+
+## Added version of plots for Tatiana's comment, undecided which one to use yet
 # Plot
 dat <- list(Pi = Pi, Elongation = Elongation,
             Area = Area, Totalroot = Totalroot)
 svglite::svglite("syncom_effects_clustered.svg", width = 6, height = 6)
 tab <- plot_combined_effects(dat = dat)
+dev.off()
+
+svglite::svglite("syncom_effects_clustered_standardized.svg", width = 6, height = 6)
+tab <- plot_combined_effects(dat = dat,standardize = TRUE)
+dev.off()
+
+svglite::svglite("syncom_effects_notclustered.svg", width = 6, height = 6)
+tab <- plot_combined_effects(dat = dat,cluster = FALSE)
+dev.off()
+
+svglite::svglite("syncom_effects_notclustered_standardized.svg", width = 6, height = 6)
+tab <- plot_combined_effects(dat = dat,cluster = FALSE, standardize = TRUE)
+dev.off()
+
 rm(Elongation,Area,Pi,Totalroot)
 
 # Read data

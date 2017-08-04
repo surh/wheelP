@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -41,7 +41,7 @@ Map$Bacteria[ Map$Bacteria == "SC5" ] <- "I2I3"
 Map$Bacteria[ Map$Bacteria == "SC6" ] <- "I3N1"
 Map$Bacteria[ Map$Bacteria == "SC7" ] <- "N1N2"
 Map$Bacteria[ Map$Bacteria == "SC8" ] <- "N2N3"
-Map$Bacteria[ Map$Bacteria == "SC9" ] <- "N3P1"
+Map$Bacteria[ Map$Bacteria == "SC9" ] <- "P1N3"
 Map$Bacteria[ Map$Bacteria == "SC10" ] <- "P1I1"
 Map$Bacteria[ Map$Bacteria == "SC11" ] <- "P2I1"
 Map$Bacteria[ Map$Bacteria == "SC12" ] <- "P1P3"
@@ -49,7 +49,7 @@ Map$Bacteria[ Map$Bacteria == "SC13" ] <- "P2N3"
 Map$Bacteria[ Map$Bacteria == "SC14" ] <- "P3N3"
 Map$Bacteria <- factor(Map$Bacteria,
                        levels = c("No Bacteria","P1P2","P2P3","P3I1","I1I2","I2I3",
-                                  "I3N1","N1N2","N2N3","N3P1","P1P3","P1I1","P2I1",
+                                  "I3N1","N1N2","N2N3","P1N3","P1P3","P1I1","P2I1",
                                   "P2N3","P3N3"))
 
 Map$P1 <- 0
@@ -122,5 +122,5 @@ ggsave("PCA_A260.230.svg",p1,width = 4, height = 4)
 # save(Dat,file = "wheel_dataset.rdat")
 wheelP.rna <- Dat
 devtools::use_data(wheelP.rna,
-                   pkg = "~/rhizogenomics/src/trunk/phosphate_code/wheelP/",
+                   pkg = "~/rhizogenomics/github/wheelP/",
                    overwrite = TRUE)
