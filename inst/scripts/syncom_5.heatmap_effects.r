@@ -23,15 +23,15 @@ setwd("~/rhizogenomics/experiments/2017/today4/syncom/")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 
 # Read data
-# Elongation <- read.table("elongation_single_community_test.txt", header = TRUE, sep = "\t")
-# Area <- read.table("area_single_community_test.txt", header = TRUE, sep = "\t")
-# Pi <- read.table("pi_single_community_test.txt", header = TRUE, sep = "\t")
-# Totalroot <- read.table("totalroot_single_community_test.txt", header = TRUE, sep = "\t")
+Elongation <- read.table("elongation_single_community_test.txt", header = TRUE, sep = "\t")
+Area <- read.table("area_single_community_test.txt", header = TRUE, sep = "\t")
+Pi <- read.table("pi_single_community_test.txt", header = TRUE, sep = "\t")
+Totalroot <- read.table("totalroot_single_community_test.txt", header = TRUE, sep = "\t")
 
-Elongation <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/elongation_single_community_test.txt", header = TRUE, sep = "\t")
-Area <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/area_single_community_test.txt", header = TRUE, sep = "\t")
-Pi <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/pi_single_community_test.txt", header = TRUE, sep = "\t")
-Totalroot <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/totalroot_single_community_test.txt", header = TRUE, sep = "\t")
+# Elongation <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/elongation_single_community_test.txt", header = TRUE, sep = "\t")
+# Area <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/area_single_community_test.txt", header = TRUE, sep = "\t")
+# Pi <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/pi_single_community_test.txt", header = TRUE, sep = "\t")
+# Totalroot <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/totalroot_single_community_test.txt", header = TRUE, sep = "\t")
 
 ## Added version of plots for Tatiana's comment, undecided which one to use yet
 # Plot
@@ -56,10 +56,15 @@ dev.off()
 rm(Elongation,Area,Pi,Totalroot)
 
 # Read data
-Elongation <- read.table("elongation_block_test.txt", header = TRUE, sep = "\t")
-Area <- read.table("area_block_test.txt", header = TRUE, sep = "\t")
-Pi <- read.table("pi_block_test.txt", header = TRUE, sep = "\t")
-Totalroot <- read.table("totalroot_block_test.txt", header = TRUE, sep = "\t")
+# Elongation <- read.table("elongation_block_test.txt", header = TRUE, sep = "\t")
+# Area <- read.table("area_block_test.txt", header = TRUE, sep = "\t")
+# Pi <- read.table("pi_block_test.txt", header = TRUE, sep = "\t")
+# Totalroot <- read.table("totalroot_block_test.txt", header = TRUE, sep = "\t")
+
+Elongation <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/elongation_block_test.txt", header = TRUE, sep = "\t")
+Area <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/area_block_test.txt", header = TRUE, sep = "\t")
+Pi <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/pi_block_test.txt", header = TRUE, sep = "\t")
+Totalroot <- read.table("~/rhizogenomics/experiments/2017/2017-03-01.wheel_phenotypes/totalroot_block_test.txt", header = TRUE, sep = "\t")
 
 # Plot
 dat <- list(Pi = Pi, Elongation = Elongation,
@@ -69,7 +74,7 @@ tab <- plot_combined_effects(dat = dat)
 dev.off()
 
 
-tab <- scale(tab, center = FALSE)
+tab <- scale(tab, center = TRUE)
 tab <- as.data.frame(tab)
 tab$Block <- row.names(tab)
 tab <- reshape2::melt(tab,id.vars = "Block")
