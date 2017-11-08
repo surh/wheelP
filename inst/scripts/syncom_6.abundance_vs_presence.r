@@ -24,57 +24,30 @@ setwd("~/rhizogenomics/experiments/2017/today4/")
 data(Elongation)
 data(wheelP.mapsplit)
 
-# # Remove validation experiment for which there is only one phenotype
-# wheelP.mapsplit <- subset(wheelP.mapsplit,
-#                           !(Experiment %in% c("Validation1","Validation2")),
-#                           drop = TRUE,clean = TRUE)
-#
-# # head(Elongation)
-# # head(wheelP.mapsplit$Map)
-# #
-# # Elongation$Experiment
-# # wheelP.mapsplit$Map$Experiment
-# #
-# # Elongation$Bacteria
-# # wheelP.mapsplit$Map$Bacteria
-#
-#
-# # Combine samples of the same group
-# wheelP.mapsplit$Map$Group <- paste(wheelP.mapsplit$Map$Bacteria,
-#                                    wheelP.mapsplit$Map$Replicate,
-#                                    wheelP.mapsplit$Map$Experiment,
-#                                    wheelP.mapsplit$Map$Pre.Pi,
-#                                    wheelP.mapsplit$Map$Pos.Pi, sep = "_")
-# abun <- pool_samples(wheelP.mapsplit,
-#                      groups = "Group",
-#                      FUN = sum)
-#
-# # Combine taxa of the same block
-# abun <- collapse_by_taxonomy(abun,Group = "Block")
-# abun <- abun[ -which(row.names(abun) == "contaminant"), ]
-#
-# # Convert abund to  percent
-# abun <- apply(abun,2,function(x) x / sum(x))
-#
-# # Transpose
-# abun <- as.data.frame(t(abun))
-# head(abun)
-
 Dat <- obtain_block_abundances(Dat = wheelP.mapsplit,
                                varnames = c("Bacteria","Replicate","Experiment","Pre.Pi", "Pos.Pi"),
                                taxa.group = "Block", sep = "_", taxa2rm = "contaminant")
 head(Dat)
-
-
-
-
 head(Elongation)
 
+# Remove validation experiments since there is no pohenotypic data
+Dat <- droplevels(subset(Dat, Experiment %in% c("1","2")))
+
+# Rename experiments to match real batches
+Dat$Bacteria <- factor(Dat$Bacteria, levels = levels(Elongation$Bacteria))
+ftable(Experiment ~ Bacteria, data = Elongation)
+ftable(Experiment ~ Bacteria, data = Dat)
+Dat$EXP <- NULL
+Dat$EXP[ Dat$Bacteria %in% c("P1P2","P2P3","P3I1","I1I2","I2I3") & Dat$Experiment == "1" ] <- "A"
+Dat$EXP[ Dat$Bacteria %in% c("P1P2","P2P3","P3I1","I1I2","I2I3") & Dat$Experiment == "2" ] <- "B"
+Dat$EXP[ Dat$Bacteria %in% c("I3N1","N1N2","N2N3","P1N3") & Dat$Experiment == "1" ] <- "C"
+Dat$EXP[ Dat$Bacteria %in% c("I3N1","N1N2","N2N3","P1N3") & Dat$Experiment == "2" ] <- "D"
+Dat$EXP[ Dat$Bacteria %in% c("P1I1","P2I1","P1P3") & Dat$Experiment == "1" ] <- "F"
+Dat$EXP[ Dat$Bacteria %in% c("P1I1","P2I1","P1P3") & Dat$Experiment == "2" ] <- "H"
+Dat$EXP[ Dat$Bacteria %in% c("P2N3","P3N3") & Dat$Experiment == "1" ] <- "E"
+Dat$EXP[ Dat$Bacteria %in% c("P2N3","P3N3") & Dat$Experiment == "2" ] <- "G"
+ftable(EXP ~ Bacteria, data = Dat)
 
 
-# Reformat Abundances
-abun <- melt(abun)
-
-
-
-
+head(Dat)
+head(Elongation)
