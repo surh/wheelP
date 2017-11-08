@@ -18,51 +18,59 @@
 library(AMOR)
 library(wheelP)
 
+setwd("~/rhizogenomics/github/wheelP/")
 setwd("~/rhizogenomics/experiments/2017/today4/")
 
 data(Elongation)
 data(wheelP.mapsplit)
 
-
-# Remove validation experiment for which there is only one phenotype
-wheelP.mapsplit <- subset(wheelP.mapsplit,
-                          !(Experiment %in% c("Validation1","Validation2")),
-                          drop = TRUE,clean = TRUE)
-
-
-
-
-
-# head(Elongation)
-# head(wheelP.mapsplit$Map)
+# # Remove validation experiment for which there is only one phenotype
+# wheelP.mapsplit <- subset(wheelP.mapsplit,
+#                           !(Experiment %in% c("Validation1","Validation2")),
+#                           drop = TRUE,clean = TRUE)
 #
-# Elongation$Experiment
-# wheelP.mapsplit$Map$Experiment
+# # head(Elongation)
+# # head(wheelP.mapsplit$Map)
+# #
+# # Elongation$Experiment
+# # wheelP.mapsplit$Map$Experiment
+# #
+# # Elongation$Bacteria
+# # wheelP.mapsplit$Map$Bacteria
 #
-# Elongation$Bacteria
-# wheelP.mapsplit$Map$Bacteria
+#
+# # Combine samples of the same group
+# wheelP.mapsplit$Map$Group <- paste(wheelP.mapsplit$Map$Bacteria,
+#                                    wheelP.mapsplit$Map$Replicate,
+#                                    wheelP.mapsplit$Map$Experiment,
+#                                    wheelP.mapsplit$Map$Pre.Pi,
+#                                    wheelP.mapsplit$Map$Pos.Pi, sep = "_")
+# abun <- pool_samples(wheelP.mapsplit,
+#                      groups = "Group",
+#                      FUN = sum)
+#
+# # Combine taxa of the same block
+# abun <- collapse_by_taxonomy(abun,Group = "Block")
+# abun <- abun[ -which(row.names(abun) == "contaminant"), ]
+#
+# # Convert abund to  percent
+# abun <- apply(abun,2,function(x) x / sum(x))
+#
+# # Transpose
+# abun <- as.data.frame(t(abun))
+# head(abun)
+
+Dat <- obtain_block_abundances(Dat = wheelP.mapsplit,
+                               varnames = c("Bacteria","Replicate","Experiment","Pre.Pi", "Pos.Pi"),
+                               taxa.group = "Block", sep = "_", taxa2rm = "contaminant")
+head(Dat)
 
 
-# Combine samples of the same group
-wheelP.mapsplit$Map$Group <- paste(wheelP.mapsplit$Map$Bacteria,
-                                   wheelP.mapsplit$Map$Replicate,
-                                   wheelP.mapsplit$Map$Experiment,
-                                   wheelP.mapsplit$Map$Pre.Pi,
-                                   wheelP.mapsplit$Map$Pos.Pi, sep = "_")
-abun <- pool_samples(wheelP.mapsplit,
-                     groups = "Group",
-                     FUN = sum)
-
-# Combine taxa of the same block
-abun <- collapse_by_taxonomy(abun,Group = "Block")
-abun <- abun[ -which(row.names(abun) == "contaminant"), ]
-
-# Convert abund to  percent
-abun <- apply(abun,2,function(x) x / sum(x))
 
 
-abun <- as.data.frame(t(abun))
-head(abun)
+head(Elongation)
+
+
 
 # Reformat Abundances
 abun <- melt(abun)

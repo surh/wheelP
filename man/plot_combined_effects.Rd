@@ -4,7 +4,8 @@
 \alias{plot_combined_effects}
 \title{Plot heatmap of all effects}
 \usage{
-plot_combined_effects(dat, scale = TRUE)
+plot_combined_effects(dat, scale = TRUE, cluster = TRUE,
+  standardize = FALSE)
 }
 \description{
 Plot heatmap of all effects
