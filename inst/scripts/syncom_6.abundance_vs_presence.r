@@ -24,13 +24,14 @@ library(wheelP)
 setwd("~/rhizogenomics/experiments/2017/today5/")
 outdir <- "~/rhizogenomics/experiments/2017/today5/"
 
-data(Elongation)
 data(wheelP.mapsplit)
-
 Dat <- obtain_block_abundances(Dat = wheelP.mapsplit,
                                varnames = c("Bacteria","Experiment","Pre.Pi", "Pos.Pi"),
                                taxa.group = "Block", sep = "_", taxa2rm = "contaminant")
 head(Dat)
+
+######## Elongation ############
+data(Elongation)
 head(Elongation)
 
 # Remove validation experiments since there is no pohenotypic data
@@ -193,3 +194,7 @@ p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
                                   size = 22))
 p1
 ggsave("abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
+
+rm(dat,Elongation,Phen,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
+
+############### Pi ################
