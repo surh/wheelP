@@ -15,7 +15,7 @@ obtain_block_abundances <- function(Dat, varnames = c("Bacteria","Replicate","Ex
   if(length(varnames) > length(AMOR::variables(Dat)))
     stop("ERROR: More varnames passed than variables in Dataset", call. = TRUE)
 
-  if(!all(varnames %in% variables(Dat)))
+  if(!all(varnames %in% AMOR::variables(Dat)))
     stop("ERROR: Some varnames not in variables in Dataset", call. = TRUE)
 
   if(length(taxa.group) != 1)
