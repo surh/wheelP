@@ -29,7 +29,7 @@ block_effects <- function(Dat,var.name, cond1,cond2,
 
   singlecoms <- paste(rep(c("P","I","N"),each = 3),rep(1:3,times = 3),sep="")
 
-  if(create_design){
+  if(create.design){
     # Build design matrix
     X <- matrix(0, nrow = nrow(Dat), ncol = 10 )
     colnames(X) <- c("Inoculated", singlecoms)

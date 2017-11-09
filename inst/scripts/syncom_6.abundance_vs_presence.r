@@ -18,8 +18,9 @@
 library(AMOR)
 library(wheelP)
 
-# setwd("~/rhizogenomics/github/wheelP/")
-# devtools::document()
+setwd("~/rhizogenomics/github/wheelP/")
+devtools::document()
+
 setwd("~/rhizogenomics/experiments/2017/today5/")
 outdir <- "~/rhizogenomics/experiments/2017/today5/"
 
@@ -71,36 +72,18 @@ Res.sc <- test_single_community_phenotype(Dat = Phen,dir = outdir,
 summary(qvalue::qvalue(Res.sc$p.value))
 
 # Now test block effects
-singlecoms <- paste(rep(c("P","I","N"),each = 3),rep(1:3,times = 3),sep="")
-Phen <- merge_phen_and_abun(Phen = Phen, abun = Dat, columns = singlecoms,)
-head(Phen)
+Res.abun <- test_single_block_phenptype(Phen = Phen,
+                                        abun = Dat,
+                                        phenotype = 'Elongation',
+                                        variables = c("Bacteria", "Experiment", "StartP", "EndP"),
+                                        confounders = c("Experiment"),
+                                        use_abun = TRUE)
+summary(qvalue::qvalue(Res.abun$p.value))
 
-Res2 <- NULL
-for(i in 1:2){
-  for(j in 1:2){
-    m1 <- block_effects(Dat = Dat, cond1 = i, cond2 = j,
-                        var.name = "Elongation",
-                        keep.vars = c("Plate","Experiment"))
-    m1.sum <- summary(m1)
+Res.block <- test_single_block_phenptype(Phen = Phen,
+                                         phenotype = 'Elongation',
+                                         variables = c("Bacteria", "Experiment", "StartP", "EndP"),
+                                         confounders = c("Experiment"),
+                                         use_abun = FALSE)
+summary(qvalue::qvalue(Res.block$p.value))
 
-    res <- data.frame(SynCom = singlecoms, StartP = levels(Dat$StartP)[i],
-                      EndP = levels(Dat$EndP)[j],
-                      Estimate = m1.sum$coefficients[ singlecoms, 1 ],
-                      SE = m1.sum$coefficients[ singlecoms, 2 ],
-                      t.value = m1.sum$coefficients[ singlecoms, 3 ],
-                      p.value = m1.sum$coefficients[ singlecoms, 4 ])
-    Res2 <- rbind(Res2,res)
-    # p1 <- coefplot(m1, intercept = FALSE,innerCI = 1, outerCI = 2,
-    #                coefficients = singlecoms,
-    #                lwdOuter = 0.5, lwdInner = 2.5, pointSize = 4,
-    #                color = "black", zeroColor = "red", zeroType = 1)
-    # p1 <- p1 + theme(axis.text.y = element_text(color = "black"),
-    #                  panel.border = element_rect(fill = NA, color = "black", size = 2),
-    #                  panel.background = element_rect(fill = "white")) +
-    #   ggtitle(paste(levels(Dat$StartP)[i],"=>",levels(Dat$EndP)[j]))
-    # p1
-    #
-    # filename <- paste(dir,"/coefplot_",i,j,".png",sep = "")
-    # ggsave(filename = filename, p1 , width = 3.5, height = 5)
-  }
-}
