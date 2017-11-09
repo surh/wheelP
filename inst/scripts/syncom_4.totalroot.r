@@ -120,36 +120,43 @@ write.table(Res2,"totalroot_block_test.txt",
 Pred <- predict_from_main(dat = Res, Res.main = Res2)
 head(Pred)
 
-# Format observed effects
-dat <- Res
-dat$Block1 <- substring(dat$SynCom,1,2)
-dat$Block2 <- substring(dat$SynCom,3,4)
-dat$Block1 <- factor(dat$Block1 , levels = singlecoms)
-dat$Block2 <- factor(dat$Block2 , levels = rev(singlecoms))
+# # Format observed effects
+# dat <- Res
+# dat$Block1 <- substring(dat$SynCom,1,2)
+# dat$Block2 <- substring(dat$SynCom,3,4)
+# dat$Block1 <- factor(dat$Block1 , levels = singlecoms)
+# dat$Block2 <- factor(dat$Block2 , levels = rev(singlecoms))
+#
+# # Predict from main effects
+# Pred <- NULL
+# for(i in 1:nrow(Res)){
+#   # i <- 1
+#   index1 <- Res2$StartP == dat$StartP[i] &
+#     Res2$EndP == dat$EndP[i] &
+#     Res2$SynCom == dat$Block1[i]
+#   index2 <- Res2$StartP == dat$StartP[i] &
+#     Res2$EndP == dat$EndP[i] &
+#     Res2$SynCom == dat$Block2[i]
+#   additiveguess <- Res2$Estimate[index1] + Res2$Estimate[index2]
+#
+#   res <- data.frame(SynCom = paste(Res2$SynCom[index1],Res2$SynCom[index2],sep = ""),
+#                     StartP = dat$StartP[i], EndP = dat$EndP[i],
+#                     Estimate = additiveguess, SE = NA, t.value = NA,
+#                     p.value = NA, Block1 = Res2$SynCom[index2],
+#                     Block2 = Res2$SynCom[index1])
+#   Pred <- rbind(Pred,res)
+# }
 
-# Predict from main effects
-Pred <- NULL
-for(i in 1:nrow(Res)){
-  # i <- 1
-  index1 <- Res2$StartP == dat$StartP[i] &
-    Res2$EndP == dat$EndP[i] &
-    Res2$SynCom == dat$Block1[i]
-  index2 <- Res2$StartP == dat$StartP[i] &
-    Res2$EndP == dat$EndP[i] &
-    Res2$SynCom == dat$Block2[i]
-  additiveguess <- Res2$Estimate[index1] + Res2$Estimate[index2]
+singlecoms <- paste(rep(c("P","I","N"),each = 3),rep(1:3,times = 3),sep="")
+Full <- Res
+Full$Block1 <- substring(Full$SynCom,1,2)
+Full$Block2 <- substring(Full$SynCom,3,4)
+Full$Block1 <- factor(Full$Block1 , levels = singlecoms)
+Full$Block2 <- factor(Full$Block2 , levels = rev(singlecoms))
 
-  res <- data.frame(SynCom = paste(Res2$SynCom[index1],Res2$SynCom[index2],sep = ""),
-                    StartP = dat$StartP[i], EndP = dat$EndP[i],
-                    Estimate = additiveguess, SE = NA, t.value = NA,
-                    p.value = NA, Block1 = Res2$SynCom[index2],
-                    Block2 = Res2$SynCom[index1])
-  Pred <- rbind(Pred,res)
-}
-
-dat$Type <- "Measured"
+Full$Type <- "Measured"
 Pred$Type <- "Predicted"
-Full <- rbind(dat,Pred)
+Full <- rbind(Full,Pred)
 
 p1 <- ggplot(Full, aes(x = Block1, y = Block2)) +
   facet_grid(StartP ~ EndP) +
@@ -167,11 +174,15 @@ p1 <- ggplot(Full, aes(x = Block1, y = Block2)) +
 p1
 ggsave("totalroot_images/heatmap_mix_full.svg",p1, width = 8, height = 7)
 
-dat$Measured <- dat$Estimate
-dat$Predicted <- Pred$Estimate
-p1 <- ggplot(dat,aes(x = Measured, y = Predicted)) +
+Res$Measured <- Res$Estimate
+Res$Predicted <- Pred$Estimate
+Res$SE.pred <- Pred$SE
+p1 <- ggplot(Res,aes(x = Measured, y = Predicted)) +
   facet_grid(StartP ~ EndP) +
   geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE, xpos = -1.7, ypos = 3) +
+  geom_errorbarh(aes(xmin = Measured - SE, xmax = Measured + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
   geom_smooth(method = 'lm') +
   # geom_abline(intercept = 0, slope =1) +
   xlab(label = "Measured (cm)") +
