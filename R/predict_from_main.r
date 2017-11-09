@@ -9,7 +9,7 @@ predict_from_main <- function(dat, Res.main){
   dat$Block2 <- factor(dat$Block2 , levels = rev(singlecoms))
 
   Pred <- NULL
-  for(i in 1:nrow(Res)){
+  for(i in 1:nrow(dat)){
     index1 <- Res.main$StartP == dat$StartP[i] &
       Res.main$EndP == dat$EndP[i] &
       Res.main$SynCom == dat$Block1[i]

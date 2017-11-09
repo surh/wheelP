@@ -1,4 +1,8 @@
-#https://gist.github.com/kdauria/524eade46135f6348140
+#' Stat_smooth for coef of determination
+#'
+#' https://gist.github.com/kdauria/524eade46135f6348140
+#'
+#' @export
 stat_smooth_func <- function(mapping = NULL, data = NULL,
                              geom = "smooth", position = "identity",
                              ...,

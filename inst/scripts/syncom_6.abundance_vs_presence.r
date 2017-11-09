@@ -18,8 +18,8 @@
 library(AMOR)
 library(wheelP)
 
-setwd("~/rhizogenomics/github/wheelP/")
-devtools::document()
+# setwd("~/rhizogenomics/github/wheelP/")
+# devtools::document()
 
 setwd("~/rhizogenomics/experiments/2017/today5/")
 outdir <- "~/rhizogenomics/experiments/2017/today5/"
