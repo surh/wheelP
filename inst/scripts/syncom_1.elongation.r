@@ -19,28 +19,28 @@ library(wheelP)
 library(ggplot2)
 #library(coefplot)
 
-setwd("~/rhizogenomics/experiments/2017/today5//")
+# setwd("~/rhizogenomics/experiments/2017/today5//")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 # source("/home/sur/rhizogenomics/src/trunk/phosphate_code/monoP/functions.r")
 
-# Dat <- read.table("~/rhizogenomics/experiments/2015/2015-07-27.wheelP/elongation_full.txt",
-#                   sep="\t", header = TRUE)
-# head(Dat)
-#
-# # Order communities, and rename based on new labels
-# Dat$Bacteria <- factor(Dat$Bacteria, levels = c("none","G1G2","G2G3","G3N1",
-#                                                 "N1N2","N2N3","N3B1","B1B2",
-#                                                 "B2B3","G1B3","G1N1","G2N1",
-#                                                 "G1G3","G2B3","G3B3"))
-# levels(Dat$Bacteria) <- c("none","P1P2","P2P3","P3I1",
-#                           "I1I2","I2I3","I3N1","N1N2",
-#                           "N2N3","P1N3","P1I1","P2I1",
-#                           "P1P3","P2N3","P3N3")
-# # Save data to package
-# Elongation <- Dat
-# devtools::use_data(Elongation, pkg = "~/rhizogenomics/src/trunk/phosphate_code/wheelP/",
-#                    overwrite = TRUE)
-# rm(Elongation)
+Dat <- read.table("~/rhizogenomics/experiments/2015/2015-07-27.wheelP/elongation_full.txt",
+                  sep="\t", header = TRUE)
+head(Dat)
+
+# Order communities, and rename based on new labels
+Dat$Bacteria <- factor(Dat$Bacteria, levels = c("none","G1G2","G2G3","G3N1",
+                                                "N1N2","N2N3","N3B1","B1B2",
+                                                "B2B3","G1B3","G1N1","G2N1",
+                                                "G1G3","G2B3","G3B3"))
+levels(Dat$Bacteria) <- c("none","P1P2","P2P3","P3I1",
+                          "I1I2","I2I3","I3N1","N1N2",
+                          "N2N3","P1N3","P1I1","P2I1",
+                          "P1P3","P2N3","P3N3")
+# Save data to package
+Elongation <- Dat
+devtools::use_data(Elongation, pkg = "~/rhizogenomics/src/trunk/phosphate_code/wheelP/",
+                   overwrite = TRUE)
+rm(Elongation)
 ###################################
 data(Elongation)
 Dat <- Elongation
