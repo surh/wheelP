@@ -65,7 +65,7 @@ Phen <- aggregate(Elongation ~ Bacteria + Experiment + StartP + EndP, data = Phe
 head(Phen)
 
 # Test phenotype on collapsed data
-Res.sc <- test_single_community_phenotype(Dat = Phen,dir = outdir,
+Res.sc <- test_single_community_phenotype(Dat = Phen,dir = "Elongation/",
                                           var.name = "Elongation",
                                           bacteria.col = "Bacteria", ref.level = 'none',
                                           plot = FALSE, f1.extra = "+ Experiment")
@@ -87,3 +87,31 @@ Res.block <- test_single_block_phenptype(Phen = Phen,
                                          use_abun = FALSE)
 summary(qvalue::qvalue(Res.block$p.value))
 
+# Compare abundance and not abundance based
+head(Res.block)
+head(Res.abun)
+
+dat <- Res.block
+dat$t.value <- dat$p.value <- NULL
+dat$Estimate.block <- dat$Estimate
+dat$SE.block <- dat$SE
+dat$Estimate <- dat$SE <- NULL
+dat$Estimate.abun <- Res.abun$Estimate
+dat$SE.abun <- Res.abun$SE
+head(dat)
+
+p1 <- ggplot(dat,aes(x = Estimate.block, y = Estimate.abun)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point() +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE, xpos = -2, ypos = 1.5) +
+  geom_errorbar(aes(ymin = Estimate.abun - SE.abun, ymax = Estimate.abun + SE.abun)) +
+  geom_errorbarh(aes(xmin = Estimate.block - SE.block, xmax = Estimate.block + SE.block)) +
+  geom_smooth(method = "lm") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
