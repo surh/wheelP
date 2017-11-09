@@ -41,7 +41,7 @@ stat_smooth_func <- function(mapping = NULL, data = NULL,
 }
 
 
-StatSmoothFunc <- ggplot2::ggproto("StatSmooth", Stat,
+StatSmoothFunc <- ggplot2::ggproto("StatSmooth", ggplot2::Stat,
 
                           setup_params = function(data, params) {
                             # Figure out what type of smoothing to do: loess for small datasets,

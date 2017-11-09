@@ -115,3 +115,81 @@ p1 <- ggplot(dat,aes(x = Estimate.block, y = Estimate.abun)) +
         strip.text = element_text(face = "bold",
                                   size = 22))
 p1
+ggsave("block_effect_comparison.svg", p1, width = 7, height = 7)
+
+
+# Predict from main effects
+Pred.block <- predict_from_main(dat = Res.sc, Res.main = Res.block)
+
+dat <- Res.sc
+dat$Measured <- dat$Estimate
+dat$Predicted <- Pred.block$Estimate
+dat$SE.pred <- Pred.block$SE
+head(dat)
+p1 <- ggplot(dat,aes(x = Measured, y = Predicted)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE, xpos = -3, ypos = 1.5) +
+  geom_errorbarh(aes(xmin = Measured - SE, xmax = Measured + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  #geom_abline(intercept = 0, slope =1) +
+  xlab(label = "Measured (cm)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+
+Pred.abun <- predict_from_main(dat = Res.sc, Res.main = Res.abun)
+
+dat <- Res.sc
+dat$Measured <- dat$Estimate
+dat$Predicted <- Pred.abun$Estimate
+dat$SE.pred <- Pred.abun$SE
+head(dat)
+p1 <- ggplot(dat,aes(x = Measured, y = Predicted)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE, xpos = -3, ypos = 1.5) +
+  geom_errorbarh(aes(xmin = Measured - SE, xmax = Measured + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  #geom_abline(intercept = 0, slope =1) +
+  xlab(label = "Measured (cm)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+
+# Plot together
+dat <- cbind(rbind(Res.sc,Res.sc),
+             rbind(data.frame(Predicted = Pred.abun$Estimate,
+                              SE.pred = Pred.abun$SE, Type = "Abundance"),
+                   data.frame(Predicted = Pred.block$Estimate,
+                              SE.pred = Pred.block$SE, Type = "Block")))
+head(dat)
+p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE, xpos = -3.5) +
+  geom_errorbarh(aes(xmin = Estimate - SE, xmax = Estimate + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  xlab(label = "Measured (cm)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+ggsave("abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
