@@ -259,12 +259,6 @@ p1 <- ggplot(dat,aes(x = Estimate.block, y = Estimate.abun)) +
 p1
 ggsave("pi_block_effect_comparison.svg", p1, width = 7, height = 7)
 
-
-
-
-
-
-
 # Predict from main effects
 Pred.block <- predict_from_main(dat = Res.sc, Res.main = Res.block)
 
@@ -344,6 +338,145 @@ ggsave("pi_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
 rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
 
 ################ Area #########################
+data(Pi)
+Phen <- Pi
+rm(Pi)
+
+# Collapse elongation to match sequencing data
+Phen$LogArea <- log(Phen$shoot_area)
+Phen <- aggregate(LogArea ~ Bacteria + Experiment + StartP + EndP, data = Phen, FUN = mean)
+head(Phen)
+
+# Test phenotype on collapsed data
+Res.sc <- test_single_community_phenotype(Dat = Phen,dir = "area_images/",
+                                          var.name = "LogArea",
+                                          bacteria.col = "Bacteria", ref.level = 'none',
+                                          plot = FALSE, f1.extra = "+ Experiment")
+summary(qvalue::qvalue(Res.sc$p.value))
+
+# Now test block effects
+Res.abun <- test_single_block_phenptype(Phen = Phen,
+                                        abun = Dat,
+                                        phenotype = 'LogArea',
+                                        variables = c("Bacteria", "Experiment", "StartP", "EndP"),
+                                        confounders = c("Experiment"),
+                                        use_abun = TRUE)
+summary(qvalue::qvalue(Res.abun$p.value))
+
+Res.block <- test_single_block_phenptype(Phen = Phen,
+                                         phenotype = 'LogArea',
+                                         variables = c("Bacteria", "Experiment", "StartP", "EndP"),
+                                         confounders = c("Experiment"),
+                                         use_abun = FALSE)
+summary(qvalue::qvalue(Res.block$p.value))
+
+# Compare abundance and not abundance based
+head(Res.block)
+head(Res.abun)
+
+dat <- Res.block
+dat$t.value <- dat$p.value <- NULL
+dat$Estimate.block <- dat$Estimate
+dat$SE.block <- dat$SE
+dat$Estimate <- dat$SE <- NULL
+dat$Estimate.abun <- Res.abun$Estimate
+dat$SE.abun <- Res.abun$SE
+head(dat)
+
+p1 <- ggplot(dat,aes(x = Estimate.block, y = Estimate.abun)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point() +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE,size = 3,xpos = -0.4, ypos = 0.25) +
+  geom_errorbar(aes(ymin = Estimate.abun - SE.abun, ymax = Estimate.abun + SE.abun)) +
+  geom_errorbarh(aes(xmin = Estimate.block - SE.block, xmax = Estimate.block + SE.block)) +
+  geom_smooth(method = "lm") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+ggsave("area_block_effect_comparison.svg", p1, width = 7, height = 7)
+
+# Predict from main effects
+Pred.block <- predict_from_main(dat = Res.sc, Res.main = Res.block)
+
+dat <- Res.sc
+dat$Measured <- dat$Estimate
+dat$Predicted <- Pred.block$Estimate
+dat$SE.pred <- Pred.block$SE
+head(dat)
+p1 <- ggplot(dat,aes(x = Measured, y = Predicted)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE,xpos = -0.5) +
+  geom_errorbarh(aes(xmin = Measured - SE, xmax = Measured + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  #geom_abline(intercept = 0, slope =1) +
+  xlab(label = "Measured (log fold-change)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+
+Pred.abun <- predict_from_main(dat = Res.sc, Res.main = Res.abun)
+
+dat <- Res.sc
+dat$Measured <- dat$Estimate
+dat$Predicted <- Pred.abun$Estimate
+dat$SE.pred <- Pred.abun$SE
+head(dat)
+p1 <- ggplot(dat,aes(x = Measured, y = Predicted)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE, xpos = -0.5) +
+  geom_errorbarh(aes(xmin = Measured - SE, xmax = Measured + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  #geom_abline(intercept = 0, slope =1) +
+  xlab(label = "Measured (log fold-change)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+
+# Plot together
+dat <- cbind(rbind(Res.sc,Res.sc),
+             rbind(data.frame(Predicted = Pred.abun$Estimate,
+                              SE.pred = Pred.abun$SE, Type = "Abundance"),
+                   data.frame(Predicted = Pred.block$Estimate,
+                              SE.pred = Pred.block$SE, Type = "Block")))
+head(dat)
+p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE,xpos = -0.5) +
+  geom_errorbarh(aes(xmin = Estimate - SE, xmax = Estimate + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  xlab(label = "Measured (log fold-change)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+ggsave("area_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
+
+rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block, Phen)
 
 
 
@@ -359,4 +492,146 @@ rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
 
 
 
+
+
+
+############# totalroot ###############
+data(Pi)
+Phen <- Pi
+rm(Pi)
+
+# Collapse elongation to match sequencing data
+Phen <- aggregate(total.root ~ Bacteria + Experiment + StartP + EndP, data = Phen, FUN = mean)
+head(Phen)
+
+# Test phenotype on collapsed data
+Res.sc <- test_single_community_phenotype(Dat = Phen,dir = "totalroot_images/",
+                                          var.name = "total.root",
+                                          bacteria.col = "Bacteria", ref.level = 'none',
+                                          plot = FALSE, f1.extra = "+ Experiment")
+summary(qvalue::qvalue(Res.sc$p.value))
+
+# Now test block effects
+Res.abun <- test_single_block_phenptype(Phen = Phen,
+                                        abun = Dat,
+                                        phenotype = 'total.root',
+                                        variables = c("Bacteria", "Experiment", "StartP", "EndP"),
+                                        confounders = c("Experiment"),
+                                        use_abun = TRUE)
+summary(qvalue::qvalue(Res.abun$p.value))
+
+Res.block <- test_single_block_phenptype(Phen = Phen,
+                                         phenotype = 'total.root',
+                                         variables = c("Bacteria", "Experiment", "StartP", "EndP"),
+                                         confounders = c("Experiment"),
+                                         use_abun = FALSE)
+summary(qvalue::qvalue(Res.block$p.value))
+
+# Compare abundance and not abundance based
+head(Res.block)
+head(Res.abun)
+
+dat <- Res.block
+dat$t.value <- dat$p.value <- NULL
+dat$Estimate.block <- dat$Estimate
+dat$SE.block <- dat$SE
+dat$Estimate <- dat$SE <- NULL
+dat$Estimate.abun <- Res.abun$Estimate
+dat$SE.abun <- Res.abun$SE
+head(dat)
+
+p1 <- ggplot(dat,aes(x = Estimate.block, y = Estimate.abun)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point() +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE,xpos = -2, ypos = 2) +
+  geom_errorbar(aes(ymin = Estimate.abun - SE.abun, ymax = Estimate.abun + SE.abun)) +
+  geom_errorbarh(aes(xmin = Estimate.block - SE.block, xmax = Estimate.block + SE.block)) +
+  geom_smooth(method = "lm") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+ggsave("totalroot_block_effect_comparison.svg", p1, width = 7, height = 7)
+
+# Predict from main effects
+Pred.block <- predict_from_main(dat = Res.sc, Res.main = Res.block)
+
+dat <- Res.sc
+dat$Measured <- dat$Estimate
+dat$Predicted <- Pred.block$Estimate
+dat$SE.pred <- Pred.block$SE
+head(dat)
+p1 <- ggplot(dat,aes(x = Measured, y = Predicted)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE) +
+  geom_errorbarh(aes(xmin = Measured - SE, xmax = Measured + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  #geom_abline(intercept = 0, slope =1) +
+  xlab(label = "Measured (cm)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+
+Pred.abun <- predict_from_main(dat = Res.sc, Res.main = Res.abun)
+
+dat <- Res.sc
+dat$Measured <- dat$Estimate
+dat$Predicted <- Pred.abun$Estimate
+dat$SE.pred <- Pred.abun$SE
+head(dat)
+p1 <- ggplot(dat,aes(x = Measured, y = Predicted)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE) +
+  geom_errorbarh(aes(xmin = Measured - SE, xmax = Measured + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  #geom_abline(intercept = 0, slope =1) +
+  xlab(label = "Measured (cm)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+
+# Plot together
+dat <- cbind(rbind(Res.sc,Res.sc),
+             rbind(data.frame(Predicted = Pred.abun$Estimate,
+                              SE.pred = Pred.abun$SE, Type = "Abundance"),
+                   data.frame(Predicted = Pred.block$Estimate,
+                              SE.pred = Pred.block$SE, Type = "Block")))
+head(dat)
+p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(size = 3) +
+  stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE,xpos = -2) +
+  geom_errorbarh(aes(xmin = Estimate - SE, xmax = Estimate + SE)) +
+  geom_errorbar(aes(ymin = Predicted - SE.pred, ymax = Predicted + SE.pred)) +
+  geom_smooth(method = 'lm') +
+  xlab(label = "Measured (cm)") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold",
+                                  color = "black",
+                                  size = 18),
+        axis.text = element_text(size = 14),
+        strip.text = element_text(face = "bold",
+                                  size = 22))
+p1
+ggsave("totalroot_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
+
+rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
 
