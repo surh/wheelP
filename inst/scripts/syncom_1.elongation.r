@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -22,33 +22,6 @@ library(ggplot2)
 # setwd("~/rhizogenomics/experiments/2017/today3/")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 # source("/home/sur/rhizogenomics/src/trunk/phosphate_code/monoP/functions.r")
-
-
-############### FUNCTIONS ################
-plotgg_heatmap_syncom_effects <- function(Res, cond1, cond2){
-  #cond1 <- 2
-  #cond2 <- 2
-
-  singlecoms <- paste(rep(c("G","N","B"),each = 3),rep(1:3,times = 3),sep="")
-  dat <- subset(Res, StartP == levels(Res$StartP)[cond1] & EndP == levels(Res$EndP)[cond2])
-  dat$SynCom1 <- substring(dat$SynCom,1,2)
-  dat$SynCom2 <- substring(dat$SynCom,3,4)
-  dat$SynCom1 <- factor(dat$SynCom1 , levels = singlecoms)
-  dat$SynCom2 <- factor(dat$SynCom2 , levels = rev(singlecoms))
-
-  p1 <- ggplot(dat, aes(x = SynCom1, y = SynCom2)) +
-    geom_tile(aes(fill = Estimate, col = p.value < 0.05), size = 3, space = 2) +
-    scale_fill_gradient2(low = "#d01c8b",mid = "white", high = "#4dac26",midpoint = 0,na.value = "#404040") +
-    scale_color_manual(values = c("#8c510a","#01665e")) +
-    ggtitle(paste(levels(dat$StartP)[cond1],"=>",levels(dat$EndP)[cond2])) +
-    theme(panel.background = element_blank(),
-          axis.title = element_text(face = "bold", size = 12),
-          axis.text = element_text(color = "black", size = 10))
-
-  p1
-}
-
-########## TEST ELONGATION #############
 
 Dat <- read.table("~/rhizogenomics/experiments/2015/2015-07-27.wheelP/elongation_full.txt",
                   sep="\t", header = TRUE)
@@ -68,6 +41,9 @@ Elongation <- Dat
 devtools::use_data(Elongation, pkg = "~/rhizogenomics/src/trunk/phosphate_code/wheelP/",
                    overwrite = TRUE)
 rm(Elongation)
+###################################
+data(Elongation)
+Dat <- Elongation
 
 # Plot experimental reproducibility
 p1 <- ggplot(Dat,aes(x = Bacteria, y = Elongation, col = Experiment)) +
@@ -75,7 +51,7 @@ p1 <- ggplot(Dat,aes(x = Bacteria, y = Elongation, col = Experiment)) +
   theme_classic() +
   theme(axis.text.x  = element_text(size = 16, angle = 90))
 p1
-ggsave("elongation_experiment.svg",p1, width = 5, height = 5)
+ggsave("elongation_experiment.svg",p1, width = 8, height = 5)
 
 ## Fit one at a time
 
