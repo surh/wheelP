@@ -31,8 +31,8 @@ test_single_block_phenptype <- function(Phen, abun, phenotype,
                           create.design = create.design)
       m1.sum <- summary(m1)
 
-      res <- data.frame(SynCom = singlecoms, StartP = levels(Dat$StartP)[i],
-                        EndP = levels(Dat$EndP)[j],
+      res <- data.frame(SynCom = singlecoms, StartP = levels(Phen$StartP)[i],
+                        EndP = levels(Phen$EndP)[j],
                         Estimate = m1.sum$coefficients[ singlecoms, 1 ],
                         SE = m1.sum$coefficients[ singlecoms, 2 ],
                         t.value = m1.sum$coefficients[ singlecoms, 3 ],
