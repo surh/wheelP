@@ -1,21 +1,33 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Test the effect of all single communities
+#'
+#' @param Dat A data.frame with columns 'StartP', 'EndP', as well as columns
+#' defined by the next parameters
+#' @param dir Where to store output
+#' @param var.name Column name containing the phenptype to test
+#' @param bacteria.col Column name containing the bacterial treatment, this
+#' is the variable of interest.
+#' @param ref.level Reference level for the bacteria.col factor
+#' @param plot Logical, produce or not plots?
+#' @param f1.extra Part of the formula to be included. Normally confounders
+#'
+#' @author Sur Herrera Paredes
 #'
 #' @export
 test_single_community_phenotype <- function(Dat, dir, var.name,  bacteria.col = "Bacteria",
