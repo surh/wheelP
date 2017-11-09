@@ -18,7 +18,8 @@
 library(AMOR)
 library(wheelP)
 
-setwd("~/rhizogenomics/github/wheelP/")
+# setwd("~/rhizogenomics/github/wheelP/")
+# devtools::document()
 setwd("~/rhizogenomics/experiments/2017/today5/")
 outdir <- "~/rhizogenomics/experiments/2017/today5/"
 
@@ -51,6 +52,12 @@ ftable(EXP ~ Bacteria, data = Dat)
 Dat$Experiment <- Dat$EXP
 Dat$EXP <- NULL
 
+# Rename condition names
+Dat$StartP <- Dat$Pre.Pi
+Dat$EndP <- Dat$Pos.Pi
+Dat$Pre.Pi <- NULL
+Dat$Pos.Pi <- NULL
+
 # Collapse elongation to match sequencing data
 Phen <- Elongation
 Phen <- aggregate(Elongation ~ Bacteria + Experiment + StartP + EndP, data = Phen, FUN = mean)
@@ -61,10 +68,12 @@ Res.sc <- test_single_community_phenotype(Dat = Phen,dir = outdir,
                                           var.name = "Elongation",
                                           bacteria.col = "Bacteria", ref.level = 'none',
                                           plot = FALSE, f1.extra = "+ Experiment")
-summary(qvalue::qvalue(res$p.value))
+summary(qvalue::qvalue(Res.sc$p.value))
 
 # Now test block effects
 singlecoms <- paste(rep(c("P","I","N"),each = 3),rep(1:3,times = 3),sep="")
+Phen <- merge_phen_and_abun(Phen = Phen, abun = Dat, columns = singlecoms,)
+head(Phen)
 
 Res2 <- NULL
 for(i in 1:2){

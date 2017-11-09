@@ -3,6 +3,7 @@
 export(block_effects)
 export(combine_datasets)
 export(dist2df)
+export(merge_phen_and_abun)
 export(metacoder_plot_go)
 export(obtain_block_abundances)
 export(parse_tax_and_plot)

@@ -5,7 +5,7 @@
 \title{Estimate block main effects}
 \usage{
 block_effects(Dat, var.name, cond1, cond2, keep.vars = c("Plate",
-  "Experiment"))
+  "Experiment"), create.design = TRUE)
 }
 \description{
 Estimate block main effects
