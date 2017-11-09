@@ -1,4 +1,6 @@
 #' Predict syncom from main effects
+#'
+#' @export
 predict_from_main <- function(dat, Res.main){
   singlecoms <- paste(rep(c("P","I","N"),each = 3),rep(1:3,times = 3),sep="")
 
