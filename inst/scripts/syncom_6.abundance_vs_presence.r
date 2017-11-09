@@ -343,7 +343,7 @@ ggsave("pi_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
 
 rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
 
-
+################ Area #########################
 
 
 

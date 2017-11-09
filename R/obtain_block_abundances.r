@@ -63,7 +63,7 @@ metadata_from_rowname <- function(Dat, varnames = c("Bacteria","Replicate","Expe
                                   sep = "_"){
 
   meta <- row.names(Dat)
-  meta <- strsplit2(x = meta, split = sep)
+  meta <- limma::strsplit2(x = meta, split = sep)
 
   if(ncol(meta) != length(varnames)){
     stop("ERROR: Wrong number of columns passed",
