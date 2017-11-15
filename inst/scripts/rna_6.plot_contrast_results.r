@@ -46,6 +46,26 @@ Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.ATH_GO_GOSLIM.txt",
                     sep = "\t", header = FALSE, quote = '')
 head(Annot)
 
+# http://structuralbiology.cau.edu.cn/PlantGSEA/database/Ara_GO
+Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.Ara_GO", sep = "\t", quote = '')
+
+a <- do.call(rbind,strsplit(x = as.character(Annot$V2),split = " {2,}"))
+a <- data.frame(a)
+a$genes <- Annot$V3
+Annot <- a
+rm(a)
+Annot <- apply(Annot,1,function(l){
+  x <- as.character(l[4])
+  x <- strsplit(x = x, split = ',')[[1]]
+
+  d <- data.frame(V1 = x, V5 = l[2], V6 = l[1], V8 = l[3], row.names = NULL)
+
+  return(d)
+})
+Annot <- do.call(rbind,Annot)
+
+head(Annot)
+
 ###### Bacteria no bacteria #######
 filename <- "bacteria_vs_nobac.txt"
 filename <- paste(indir,"/",filename,sep = "")
@@ -77,7 +97,7 @@ data <- metacoder_plot_go(dat = Res,output_folder = "bacteria_vs_nobac/",output_
 
 # GO:0006952  defense response
 
-Res <- droplevels(subset(Res,FDR < 1e-5))
+Res <- droplevels(subset(Res,FDR < 0.01))
 head(Res)
 # Res
 
