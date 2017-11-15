@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -24,9 +24,9 @@ library(edgeR)
 
 date()
 
-# setwd("~/rhizogenomics/experiments/2017/today3")
+setwd("~/rhizogenomics/experiments/2017/today9/")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
-indir <- "killdevil/"
+indir <- "~/rhizogenomics/experiments/2017/2017-03-07.wheel_rna/killdevil/"
 
 data(wheelP.rna)
 Dat <- wheelP.rna
@@ -39,6 +39,12 @@ Dat.norm <- create_dataset(Tab = rpkm(x = Dat$Tab,
                                       gene.length = gene.lengths[ taxa(Dat), ]),
                            Map = Dat$Map,
                            Tax = Dat$Tax)
+
+# The annotation file from tair can be downloaded at:
+# ftp://ftp.arabidopsis.org/home/tair/Ontologies/Gene_Ontology/
+Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.ATH_GO_GOSLIM.txt",
+                    sep = "\t", header = FALSE, quote = '')
+head(Annot)
 
 ###### Bacteria no bacteria #######
 filename <- "bacteria_vs_nobac.txt"
@@ -62,6 +68,77 @@ data <- metacoder_plot_go(dat = Res,output_folder = "bacteria_vs_nobac/",output_
 #                                    n.supertaxa = 9,
 #                                    num.changed = 3,
 #                                    min_fdr = 0.000001)
+
+
+#### Try to plot heatmap with GO terms
+
+
+# GO:0043207  response to external biotic stimulus
+
+# GO:0006952  defense response
+
+Res <- droplevels(subset(Res,FDR < 1e-5))
+head(Res)
+# Res
+
+
+gos <- droplevels(subset(Annot,V1 %in% Res$Gene & V8 == 'P'))
+gos <- lapply(levels(gos$V6),function(x,gos, Annot){
+  d <- unique(as.character(subset(gos,V6 == x)$V1))
+  d <- data.frame(GO = x, Count = length(d))
+  a <- unique(subset(Annot, V6 == x)$V5)
+  d$Annotation <- as.character(a)
+  return(d)
+}, gos = gos, Annot = Annot)
+gos <- do.call(rbind,gos)
+gos <- gos[ order(gos$Count, decreasing = TRUE), ]
+# gos
+head(gos, 20)
+
+# selected_gos <- c('GO:0009751','GO:0009407','GO:0051707')
+selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
+                  'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
+
+dat <- lapply(selected_gos, function(x){
+
+  genes <- subset(Annot,V6 == x)
+  genes <- unique(as.character(genes$V1))
+
+  data.frame(logFC = 10*(Res$Gene %in% genes),
+             logCPM = NA, F = NA,
+             PValue = NA, FDR = NA,
+             Gene = Res$Gene,
+             Type = x)
+})
+dat <- do.call(rbind,dat)
+Res$Type <- 'Gene'
+dat <- rbind(Res,dat)
+dat$Gene <- factor(dat$Gene, levels = as.character(unique(Res$Gene[ order(Res$logFC) ])))
+dat$logFC[ dat$logFC > 10 ] <- 10
+dat$logFC[ dat$logFC < -10 ] <- -10
+head(dat)
+
+p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
+  facet_grid(~ Type, scales = "free_x") +
+  geom_tile() +
+  scale_fill_gradient2(low =  c("#8e0152","#de77ae"),
+                       mid = "#f7f7f7",
+                       high = c("#7fbc41","#276419"),
+                       midpoint = 0,
+                       na.value = "#404040",
+                       guide = guide_colorbar(title = "logFC")) +
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(angle = 90, color = 'black'),
+        axis.ticks.y = element_blank(),
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        panel.background = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank())
+p1
+
+
+
 
 rm(data)
 #############  Block main effects ##########
