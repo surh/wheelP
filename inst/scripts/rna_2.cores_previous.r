@@ -19,7 +19,7 @@ library(AMOR)
 library(wheelP)
 library(edgeR)
 
-# setwd("~/rhizogenomics/experiments/2017/today5//")
+setwd("~/rhizogenomics/experiments/2017/today7/corepi_picontent/")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 
 data(wheelP.rna)
@@ -180,6 +180,64 @@ p1 <- ggplot(Res.sc,aes(x = Measured, y = Predicted)) +
                                   size = 22))
 p1
 ggsave('corepi.additivity.svg',p1,width = 7, height = 7)
+
+
+########## Core pi vs pi content
+# Calculate index for core
+Dat.sub <- remove_taxons(Dat.norm,setdiff(taxa(Dat.norm),pi.core))
+Dat.sub$Map$core.index <- collapse_matrix(Dat.sub$Tab,
+                                          groups = rep("core.index",
+                                                       nrow(Dat.sub$Tab)),
+                                          dim = 1,FUN = mean)
+
+# Prepare data
+dat <- Dat.sub$Map
+dat$Well <- dat$Genotype <- dat$Concentration <- dat$A260.230 <- dat$A260.280 <- NULL
+dat$ID <- dat$Sample <- NULL
+dat$StartP <- NULL
+dat$EndP <- NULL
+dat$StartP[ dat$Phosphate %in% c('minusP_30uM','minusP_100uM') ] <- "-Pi,0.5%Suc"
+dat$StartP[ dat$Phosphate %in% c('plusP_30uM', 'plusP_100uM') ] <- "+Pi,0.5%Suc"
+dat$EndP[ dat$Phosphate %in% c('plusP_100uM','minusP_100uM') ] <- "100 uM,0%Suc"
+dat$EndP[ dat$Phosphate %in% c('plusP_30uM','minusP_30uM') ] <- "30 uM,0%Suc"
+dat$Extraction <- factor(dat$Extraction)
+dat$Plate <- factor(dat$Plate)
+dat$Experiment <- factor(dat$Experiment)
+dat$StartP <- factor(dat$StartP)
+dat$EndP <- factor(dat$EndP)
+head(dat)
+
+data(Pi)
+head(Pi)
+
+## Remove no bacteria
+dat <- droplevels(subset(dat, Bacteria != 'No Bacteria'))
+Pi <- droplevels(subset(Pi, Bacteria != 'none'))
+
+
+head(dat)
+dat <- aggregate(core.index ~ Bacteria + Experiment + StartP + EndP, data = dat,FUN = mean)
+head(dat)
+
+
+head(Pi)
+Pi$Experiment <- as.character(Pi$Experiment)
+Pi$Experiment[ Pi$Experiment %in% c('A','C','E','F')] <- 1
+Pi$Experiment[ Pi$Experiment %in% c('B','D','G','H')] <- 2
+Pi <- aggregate(Pi_content ~ Bacteria + Experiment + StartP + EndP, data = Pi, FUN = mean)
+head(Pi)
+
+row.names(Pi) <- paste(Pi$Bacteria,Pi$Experiment,Pi$StartP,Pi$EndP,sep = '._.')
+dat$Pi_content <- Pi[ paste(dat$Bacteria,dat$Experiment,dat$StartP,dat$EndP,sep = '._.'), 'Pi_content' ]
+head(dat)
+
+p1 <- ggplot(subset(dat, EndP == '30 uM,0%Suc'),aes(x = Pi_content, y = core.index)) +
+  facet_grid(StartP ~ EndP) +
+  geom_point(aes(color = Bacteria, shape = Experiment), size = 3) +
+  geom_smooth(method = 'loess') +
+  theme_classic()
+p1
+ggsave('corepi_vs_pi.svg', p1, width = 4, height = 5)
 
 #### THE FOLLOWING SECTION IS INCORRECT!!
 #### IT CALCULATES GOODNESS OF FIT OF ADDITIVE ONLY MODEL
