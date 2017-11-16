@@ -238,7 +238,7 @@ RES2
 
 rm(Res,RES2,res,dat,gene,major.group,neg.group,pos.group,p1)
 
-#############  Block main effects ##########
+#############  Positive vs negative ##########
 filename <- "positive_vs_negative.txt"
 filename <- paste(indir,"/",filename,sep = "")
 Res <- read.table(filename, header = TRUE, stringsAsFactors = FALSE)

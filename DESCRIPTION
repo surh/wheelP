@@ -21,7 +21,7 @@ Imports:
     ggtree,
     phytools,
     svglite,
-    qvalues
+    qvalue
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
