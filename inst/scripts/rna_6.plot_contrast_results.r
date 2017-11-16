@@ -19,8 +19,6 @@ library(AMOR)
 library(wheelP)
 library(metacoder)
 library(edgeR)
-# library(org.At.tair.db)
-# library(GO.db)
 
 date()
 
@@ -42,9 +40,9 @@ Dat.norm <- create_dataset(Tab = rpkm(x = Dat$Tab,
 
 # The annotation file from tair can be downloaded at:
 # ftp://ftp.arabidopsis.org/home/tair/Ontologies/Gene_Ontology/
-Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.ATH_GO_GOSLIM.txt",
-                    sep = "\t", header = FALSE, quote = '')
-head(Annot)
+# Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.ATH_GO_GOSLIM.txt",
+#                     sep = "\t", header = FALSE, quote = '')
+# head(Annot)
 
 # http://structuralbiology.cau.edu.cn/PlantGSEA/database/Ara_GO
 Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.Ara_GO", sep = "\t", quote = '')
@@ -77,35 +75,12 @@ filename <- paste(indir,"/",filename,sep = "")
 Res <- read.table(filename, header = TRUE, stringsAsFactors = FALSE)
 head(Res)
 
-# dat <- Res
-# output_folder <- "bacteria_vs_nobac/"
-# output_format <- "svg"
-# # min_p_value <-0.000001
-# type <- GO.db::GOBPPARENTS
-# prefix <- "gobp"
-
 data <- metacoder_plot_go(dat = Res,output_folder = "bacteria_vs_nobac/",output_format = "svg",
                           min_fdr = 0.01,type = GO.db::GOBPPARENTS,prefix = "gobp",n.supertaxa = 9,
                           num.changed = 3)
-
-# data <- wheelP::parse_tax_and_plot(file = "bacteria_vs_nobac/gobp_go_res.txt", col = 5,
-#                                    output_file = "bacteria_vs_nobac/test.svg",
-#                                    n.supertaxa = 9,
-#                                    num.changed = 3,
-#                                    min_fdr = 0.000001)
-
-
-#### Try to plot heatmap with GO terms
-
-
-# GO:0043207  response to external biotic stimulus
-
-# GO:0006952  defense response
-
+# Heatmap
 Res <- droplevels(subset(Res,FDR < 0.01))
 head(Res)
-# Res
-
 
 gos <- droplevels(subset(Annot,V1 %in% Res$Gene & V8 == 'P'))
 gos <- lapply(levels(gos$V6),function(x,gos, Annot){
@@ -119,10 +94,6 @@ gos <- do.call(rbind,gos)
 gos <- gos[ order(gos$Count, decreasing = TRUE), ]
 # gos
 head(gos, 100)
-
-# selected_gos <- c('GO:0009751','GO:0009407','GO:0051707')
-# selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
-#                   'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
 
 # Select only enriched GOs from plantGSEA
 # From upregulated genes
