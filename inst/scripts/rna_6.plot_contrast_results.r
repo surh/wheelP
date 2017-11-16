@@ -49,8 +49,22 @@ head(Annot)
 # http://structuralbiology.cau.edu.cn/PlantGSEA/database/Ara_GO
 Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.Ara_GO", sep = "\t", quote = '')
 
-cbind(as.data.frame(do.call(rbind,strsplit(x = as.character(Annot$V2),split = " {2,}"))),Annot$V3)
+a <- do.call(rbind,strsplit(x = as.character(Annot$V2),split = " {2,}"))
+a <- data.frame(a)
+a$genes <- Annot$V3
+Annot <- a
+rm(a)
+Annot <- apply(Annot,1,function(l){
+  x <- as.character(l[4])
+  x <- strsplit(x = x, split = ',')[[1]]
 
+  d <- data.frame(V1 = x, V5 = l[2], V6 = l[1], V8 = l[3], row.names = NULL)
+
+  return(d)
+})
+Annot <- do.call(rbind,Annot)
+Annot <- subset(Annot, V8 == 'GOslim:biological_process')
+Annot$V8 <- 'P'
 head(Annot)
 
 core.pi <- read.table('~/rhizogenomics/data/phosphate/core_pi_up.txt')
@@ -104,11 +118,34 @@ gos <- lapply(levels(gos$V6),function(x,gos, Annot){
 gos <- do.call(rbind,gos)
 gos <- gos[ order(gos$Count, decreasing = TRUE), ]
 # gos
-head(gos, 20)
+head(gos, 100)
 
 # selected_gos <- c('GO:0009751','GO:0009407','GO:0051707')
-selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
-                  'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
+# selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
+#                   'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
+
+# Select only enriched GOs from plantGSEA
+# From upregulated genes
+# selected_gos <- c('GO:0006952','GO:0051707','GO:0045087','GO:0009617',   #PTI
+#                   'GO:0009696','GO:0009697','GO:0009751',                #SA
+#                   'GO:0009867','GO:0071395','GO:0009753')                #JA
+selected_gos <- c('GO:0051707',   #PTI
+                  'GO:0009696')   #SA
+
+# Add downregulated genes
+# selected_gos <- c(selected_gos,
+#                   'GO:0044238',          #metabolism
+#                   'GO:0006810',                       #transport
+#                   'GO:0009267','GO:0042594',          #starvation
+#                   'GO:0009628','GO:0009737')          #abiotic
+# selected_gos <- c(selected_gos,
+#                   'GO:0044238',          #metabolism
+#                   'GO:0009737')          #ABA
+selected_gos <- c(selected_gos,
+                  'GO:0009694',    #JA barely enriched
+                  'GO:0009737')          #ABA
+
+gos[ gos$GO %in% selected_gos, ]
 
 dat <- lapply(selected_gos, function(x){
 
@@ -127,6 +164,7 @@ dat <- rbind(Res,dat)
 dat$Gene <- factor(dat$Gene, levels = as.character(unique(Res$Gene[ order(Res$logFC) ])))
 dat$logFC[ dat$logFC > 10 ] <- 10
 dat$logFC[ dat$logFC < -10 ] <- -10
+dat$Type <- factor(dat$Type, levels = c('Gene',selected_gos))
 head(dat)
 
 p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
@@ -148,7 +186,7 @@ p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
         panel.border = element_blank())
 p1
 
-
+ggsave('heatmap_bacteria_nobac.svg',p1, width = 7, height = 7)
 
 rm(data,dat,gos,Res,p1)
 gc()
@@ -200,7 +238,7 @@ RES2
 
 rm(Res,RES2,res,dat,gene,major.group,neg.group,pos.group,p1)
 
-#############  Positive vs negative ##########
+#############  Block main effects ##########
 filename <- "positive_vs_negative.txt"
 filename <- paste(indir,"/",filename,sep = "")
 Res <- read.table(filename, header = TRUE, stringsAsFactors = FALSE)
@@ -663,4 +701,3 @@ AnnotationDbi::mapIds(x = org.At.tair.db::org.At.tair.db,
 
 
 date()
-
