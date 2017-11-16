@@ -273,7 +273,8 @@ p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
                        high = c("#7fbc41","#276419"),
                        midpoint = 0,
                        na.value = "#404040",
-                       guide = guide_colorbar(title = "logFC")) +
+                       guide = guide_colorbar(title = "logFC"),
+                       limits = c(-10,10)) +
   theme(axis.text.y = element_blank(),
         axis.text.x = element_text(angle = 90, color = 'black'),
         axis.ticks.y = element_blank(),
