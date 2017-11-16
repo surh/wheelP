@@ -122,15 +122,26 @@ head(gos, 100)
 
 # Select only enriched GOs from plantGSEA
 # From upregulated genes
-selected_gos <- c('GO:0006952','GO:0051707','GO:0045087','GO:0009617',   #PTI
-                  'GO:0009696','GO:0009697','GO:0009751',                #SA
-                  'GO:0009867','GO:0071395','GO:0009753')                #JA
+# selected_gos <- c('GO:0006952','GO:0051707','GO:0045087','GO:0009617',   #PTI
+#                   'GO:0009696','GO:0009697','GO:0009751',                #SA
+#                   'GO:0009867','GO:0071395','GO:0009753')                #JA
+selected_gos <- c('GO:0051707',   #PTI
+                  'GO:0009696')   #SA
+
 # Add downregulated genes
+# selected_gos <- c(selected_gos,
+#                   'GO:0044238',          #metabolism
+#                   'GO:0006810',                       #transport
+#                   'GO:0009267','GO:0042594',          #starvation
+#                   'GO:0009628','GO:0009737')          #abiotic
+# selected_gos <- c(selected_gos,
+#                   'GO:0044238',          #metabolism
+#                   'GO:0009737')          #ABA
 selected_gos <- c(selected_gos,
-                  'GO:0044238','GO:0019748',          #metabolism
-                  'GO:0006810',                       #transport
-                  'GO:0009267','GO:0042594',          #starvation
-                  'GO:0009628','GO:0009737')          #abiotic
+                  'GO:0009694',    #JA barely enriched
+                  'GO:0009737')          #ABA
+
+gos[ gos$GO %in% selected_gos, ]
 
 dat <- lapply(selected_gos, function(x){
 
@@ -149,6 +160,7 @@ dat <- rbind(Res,dat)
 dat$Gene <- factor(dat$Gene, levels = as.character(unique(Res$Gene[ order(Res$logFC) ])))
 dat$logFC[ dat$logFC > 10 ] <- 10
 dat$logFC[ dat$logFC < -10 ] <- -10
+dat$Type <- factor(dat$Type, levels = c('Gene',selected_gos))
 head(dat)
 
 p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
@@ -170,7 +182,7 @@ p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
         panel.border = element_blank())
 p1
 
-
+ggsave('heatmap_bacteria_nobac.svg',p1, width = 7, height = 7)
 
 
 rm(data)
