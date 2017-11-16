@@ -209,12 +209,11 @@ RES2
 
 rm(Res,RES2,res,dat,gene,major.group,neg.group,pos.group,p1)
 
-#############  Block main effects ##########
+############# Positive vs negative ##########
 filename <- "positive_vs_negative.txt"
 filename <- paste(indir,"/",filename,sep = "")
 Res <- read.table(filename, header = TRUE, stringsAsFactors = FALSE)
 head(Res)
-
 
 data <- metacoder_plot_go(dat = Res,output_folder = "positive_vs_negative/",
                           output_format = "svg",
@@ -241,11 +240,10 @@ selected_gos <- c('GO:0051707',   #PTI
                   'GO:0009696',   #SA
                   'GO:0009694',    #JA
                   'GO:0009737',    #ABA
-                  'GO:0006091')  #energy
-
+                  'GO:0006091',  #energy
+                  'core.pi')
 
 gos[ gos$GO %in% selected_gos, ]
-
 
 dat <- lapply(selected_gos, function(x){
 
@@ -287,6 +285,78 @@ p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
 p1
 ggsave('heatmap_pos_neg.svg',p1, width = 7, height = 7)
 
+############### Positive vs negative | 30 uM ##########
+filename <- paste("~/rhizogenomics/experiments/2017/today9/contrast/positive30uM_vs_negative30uM.txt")
+Res <- read.table(filename, header = TRUE, stringsAsFactors = FALSE)
+head(Res)
+
+# Heatmap version
+Res <- droplevels(subset(Res,FDR < 0.01))
+
+gos <- droplevels(subset(Annot,V1 %in% Res$Gene & V8 == 'P'))
+gos <- lapply(levels(gos$V6),function(x,gos, Annot){
+  d <- unique(as.character(subset(gos,V6 == x)$V1))
+  d <- data.frame(GO = x, Count = length(d))
+  a <- unique(subset(Annot, V6 == x)$V5)
+  d$Annotation <- as.character(a)
+  return(d)
+}, gos = gos, Annot = Annot)
+gos <- do.call(rbind,gos)
+gos <- gos[ order(gos$Count, decreasing = TRUE), ]
+head(gos, 50)
+
+selected_gos <- c('GO:0051707',   #PTI
+                  'GO:0009696',   #SA
+                  'GO:0009694',    #JA
+                  'GO:0009737',    #ABA
+                  'GO:0006091',  #energy
+                  'core.pi')
+
+gos[ gos$GO %in% selected_gos, ]
+
+dat <- lapply(selected_gos, function(x){
+
+  genes <- subset(Annot,V6 == x)
+  genes <- unique(as.character(genes$V1))
+
+  data.frame(logFC = 10*(Res$Gene %in% genes),
+             logCPM = NA, F = NA,
+             PValue = NA, FDR = NA,
+             Gene = Res$Gene,
+             Type = x)
+})
+dat <- do.call(rbind,dat)
+Res$Type <- 'Gene'
+dat <- rbind(Res,dat)
+dat$Gene <- factor(dat$Gene, levels = as.character(unique(Res$Gene[ order(Res$logFC) ])))
+dat$logFC[ dat$logFC > 10 ] <- 10
+dat$logFC[ dat$logFC < -10 ] <- -10
+dat$Type <- factor(dat$Type, levels = c('Gene',selected_gos))
+head(dat)
+
+
+
+
+p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
+  facet_grid(~ Type, scales = "free_x") +
+  geom_tile() +
+  scale_fill_gradient2(low =  c("#8e0152","#de77ae"),
+                       mid = "#f7f7f7",
+                       high = c("#7fbc41","#276419"),
+                       midpoint = 0,
+                       na.value = "#404040",
+                       guide = guide_colorbar(title = "logFC")) +
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(angle = 90, color = 'black'),
+        axis.ticks.y = element_blank(),
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        panel.background = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank())
+p1
+
+ggsave('heatmap_pos30_neg30.svg',p1, width = 7, height = 7)
 
 ################ Compare negatives in both pre treatment #############
 filename <- "negativeplusp_vs_negativeminusP.txt"
