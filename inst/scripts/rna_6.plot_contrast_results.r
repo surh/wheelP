@@ -63,7 +63,8 @@ Annot <- apply(Annot,1,function(l){
   return(d)
 })
 Annot <- do.call(rbind,Annot)
-
+Annot <- subset(Annot, V8 == 'GOslim:biological_process')
+Annot$V8 <- 'P'
 head(Annot)
 
 ###### Bacteria no bacteria #######
@@ -113,11 +114,23 @@ gos <- lapply(levels(gos$V6),function(x,gos, Annot){
 gos <- do.call(rbind,gos)
 gos <- gos[ order(gos$Count, decreasing = TRUE), ]
 # gos
-head(gos, 20)
+head(gos, 100)
 
 # selected_gos <- c('GO:0009751','GO:0009407','GO:0051707')
-selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
-                  'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
+# selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
+#                   'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
+
+# Select only enriched GOs from plantGSEA
+# From upregulated genes
+selected_gos <- c('GO:0006952','GO:0051707','GO:0045087','GO:0009617',   #PTI
+                  'GO:0009696','GO:0009697','GO:0009751',                #SA
+                  'GO:0009867','GO:0071395','GO:0009753')                #JA
+# Add downregulated genes
+selected_gos <- c(selected_gos,
+                  'GO:0044238','GO:0019748',          #metabolism
+                  'GO:0006810',                       #transport
+                  'GO:0009267','GO:0042594',          #starvation
+                  'GO:0009628','GO:0009737')          #abiotic
 
 dat <- lapply(selected_gos, function(x){
 
