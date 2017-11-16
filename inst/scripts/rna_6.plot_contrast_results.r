@@ -49,27 +49,9 @@ head(Annot)
 # http://structuralbiology.cau.edu.cn/PlantGSEA/database/Ara_GO
 Annot <- read.table("~/rhizogenomics/data/tair/2017-11-15.Ara_GO", sep = "\t", quote = '')
 
-a <- do.call(rbind,strsplit(x = as.character(Annot$V2),split = " {2,}"))
-a <- data.frame(a)
-a$genes <- Annot$V3
-Annot <- a
-rm(a)
-Annot <- apply(Annot,1,function(l){
-  x <- as.character(l[4])
-  x <- strsplit(x = x, split = ',')[[1]]
+cbind(as.data.frame(do.call(rbind,strsplit(x = as.character(Annot$V2),split = " {2,}"))),Annot$V3)
 
-  d <- data.frame(V1 = x, V5 = l[2], V6 = l[1], V8 = l[3], row.names = NULL)
-
-  return(d)
-})
-Annot <- do.call(rbind,Annot)
-Annot <- subset(Annot, V8 == 'GOslim:biological_process')
-Annot$V8 <- 'P'
 head(Annot)
-
-core.pi <- read.table('~/rhizogenomics/data/phosphate/core_pi_up.txt')
-core.pi <- data.frame(V1 = core.pi$V1, V5 = 'PSR core', V6 = 'core.pi', V8 = 'P')
-Annot <- rbind(Annot,core.pi)
 
 ###### Bacteria no bacteria #######
 filename <- "bacteria_vs_nobac.txt"
@@ -118,34 +100,11 @@ gos <- lapply(levels(gos$V6),function(x,gos, Annot){
 gos <- do.call(rbind,gos)
 gos <- gos[ order(gos$Count, decreasing = TRUE), ]
 # gos
-head(gos, 100)
+head(gos, 20)
 
 # selected_gos <- c('GO:0009751','GO:0009407','GO:0051707')
-# selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
-#                   'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
-
-# Select only enriched GOs from plantGSEA
-# From upregulated genes
-# selected_gos <- c('GO:0006952','GO:0051707','GO:0045087','GO:0009617',   #PTI
-#                   'GO:0009696','GO:0009697','GO:0009751',                #SA
-#                   'GO:0009867','GO:0071395','GO:0009753')                #JA
-selected_gos <- c('GO:0051707',   #PTI
-                  'GO:0009696')   #SA
-
-# Add downregulated genes
-# selected_gos <- c(selected_gos,
-#                   'GO:0044238',          #metabolism
-#                   'GO:0006810',                       #transport
-#                   'GO:0009267','GO:0042594',          #starvation
-#                   'GO:0009628','GO:0009737')          #abiotic
-# selected_gos <- c(selected_gos,
-#                   'GO:0044238',          #metabolism
-#                   'GO:0009737')          #ABA
-selected_gos <- c(selected_gos,
-                  'GO:0009694',    #JA barely enriched
-                  'GO:0009737')          #ABA
-
-gos[ gos$GO %in% selected_gos, ]
+selected_gos <- c('GO:0009627','GO:0042742','GO:0009697','GO:0015706','GO:0009617','GO:0009862','GO:0010363',
+                  'GO:0000165','GO:0009867','GO:0031348','GO:0006952','GO:0009751')
 
 dat <- lapply(selected_gos, function(x){
 
@@ -164,7 +123,6 @@ dat <- rbind(Res,dat)
 dat$Gene <- factor(dat$Gene, levels = as.character(unique(Res$Gene[ order(Res$logFC) ])))
 dat$logFC[ dat$logFC > 10 ] <- 10
 dat$logFC[ dat$logFC < -10 ] <- -10
-dat$Type <- factor(dat$Type, levels = c('Gene',selected_gos))
 head(dat)
 
 p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
@@ -186,10 +144,10 @@ p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
         panel.border = element_blank())
 p1
 
-ggsave('heatmap_bacteria_nobac.svg',p1, width = 7, height = 7)
 
-rm(data,dat,gos,Res,p1)
-gc()
+
+
+rm(data)
 #############  Block main effects ##########
 filename <- "block_main_effects.txt"
 filename <- paste(indir,"/",filename,sep = "")
@@ -244,78 +202,11 @@ filename <- paste(indir,"/",filename,sep = "")
 Res <- read.table(filename, header = TRUE, stringsAsFactors = FALSE)
 head(Res)
 
-
 data <- metacoder_plot_go(dat = Res,output_folder = "positive_vs_negative/",
                           output_format = "svg",
                           min_fdr = 0.01,type = GO.db::GOBPPARENTS,
                           prefix = "gobp",n.supertaxa = 9,
                           num.changed = 3)
-
-# Heatmap version
-Res <- droplevels(subset(Res,FDR < 0.01))
-
-gos <- droplevels(subset(Annot,V1 %in% Res$Gene & V8 == 'P'))
-gos <- lapply(levels(gos$V6),function(x,gos, Annot){
-  d <- unique(as.character(subset(gos,V6 == x)$V1))
-  d <- data.frame(GO = x, Count = length(d))
-  a <- unique(subset(Annot, V6 == x)$V5)
-  d$Annotation <- as.character(a)
-  return(d)
-}, gos = gos, Annot = Annot)
-gos <- do.call(rbind,gos)
-gos <- gos[ order(gos$Count, decreasing = TRUE), ]
-head(gos, 50)
-
-selected_gos <- c('GO:0051707',   #PTI
-                  'GO:0009696',   #SA
-                  'GO:0009694',    #JA
-                  'GO:0009737',    #ABA
-                  'GO:0006091')  #energy
-
-
-gos[ gos$GO %in% selected_gos, ]
-
-
-dat <- lapply(selected_gos, function(x){
-
-  genes <- subset(Annot,V6 == x)
-  genes <- unique(as.character(genes$V1))
-
-  data.frame(logFC = 10*(Res$Gene %in% genes),
-             logCPM = NA, F = NA,
-             PValue = NA, FDR = NA,
-             Gene = Res$Gene,
-             Type = x)
-})
-dat <- do.call(rbind,dat)
-Res$Type <- 'Gene'
-dat <- rbind(Res,dat)
-dat$Gene <- factor(dat$Gene, levels = as.character(unique(Res$Gene[ order(Res$logFC) ])))
-dat$logFC[ dat$logFC > 10 ] <- 10
-dat$logFC[ dat$logFC < -10 ] <- -10
-dat$Type <- factor(dat$Type, levels = c('Gene',selected_gos))
-head(dat)
-
-p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
-  facet_grid(~ Type, scales = "free_x") +
-  geom_tile() +
-  scale_fill_gradient2(low =  c("#8e0152","#de77ae"),
-                       mid = "#f7f7f7",
-                       high = c("#7fbc41","#276419"),
-                       midpoint = 0,
-                       na.value = "#404040",
-                       guide = guide_colorbar(title = "logFC")) +
-  theme(axis.text.y = element_blank(),
-        axis.text.x = element_text(angle = 90, color = 'black'),
-        axis.ticks.y = element_blank(),
-        strip.text = element_blank(),
-        strip.background = element_blank(),
-        panel.background = element_blank(),
-        panel.grid = element_blank(),
-        panel.border = element_blank())
-p1
-ggsave('heatmap_pos_neg.svg',p1, width = 7, height = 7)
-
 
 ################ Compare negatives in both pre treatment #############
 filename <- "negativeplusp_vs_negativeminusP.txt"
