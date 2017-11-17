@@ -390,54 +390,28 @@ data <- metacoder_plot_go(dat = Res,output_folder = "N1in30uM_vs_N3in30uM/",
                           num.changed = 3)
 
 
-
-
 # Heatmap version
 Res <- droplevels(subset(Res,FDR < 0.01))
 
 # Select data and aggregate
 Dat.sub <- create_dataset(t(scale(t(Dat.norm$Tab))),Dat.norm$Map,Dat.norm$Tax)
-
-# Dat.sub$Tab[ Dat.sub$Tab > 5] <- 5
-# Dat.sub$Tab[ Dat.sub$Tab < -5] <- -5
-# Dat.sub <- subset(Dat.sub, Phosphate %in% c('plusP_30uM','minusP_30uM') & (N1 == 1 | N3 == 1), drop = TRUE)
-Dat.sub <- subset(Dat.sub, Phosphate %in% c('plusP_30uM','minusP_30uM') & (N1 == 1 | N3 == 1 | Bacteria == 'No Bacteria'), drop = TRUE)
-
+Dat.sub <- subset(Dat.sub,
+                  Phosphate %in% c('plusP_30uM','minusP_30uM') & (N1 == 1 | N3 == 1 | Bacteria == 'No Bacteria'),
+                  drop = TRUE)
 Dat.sub <- remove_taxons(Dat.sub, taxons = setdiff(taxa(Dat.sub),as.character(Res$Gene)))
-Dat.sub$Map$Condition <- interaction(Dat.sub$Map$Phosphate,Dat.sub$Map$Bacteria,Dat.sub$Map$Experiment,drop = TRUE)
+Dat.sub$Map$Condition <- interaction(Dat.sub$Map$Phosphate,Dat.sub$Map$Bacteria,Dat.sub$Map$Experiment,
+                                     drop = TRUE)
 Dat.sub$Map$Condition <- interaction(Dat.sub$Map$Phosphate,Dat.sub$Map$Bacteria,drop = TRUE)
 Dat.sub <- pool_samples.Dataset(Dat = Dat.sub,groups = 'Condition', FUN = mean)
 Dat.sub <- create_dataset(Tab = Dat.sub$Tab,
-                          Map = data.frame(Condition = samples(Dat.sub), row.names = samples(Dat.sub)),
+                          Map = data.frame(Condition = AMOR::samples(Dat.sub), row.names = AMOR::samples(Dat.sub)),
                           Tax = Dat.sub$Tax)
 m <- data.frame(do.call(rbind,strsplit(as.character(Dat.sub$Map$Condition),split = '[.]')))
 Dat.sub$Map$Phosphate <- factor(m[,1],levels = levels(Dat$Map$Phosphate))
 Dat.sub$Map$Bacteria <- factor(m[,2],levels = levels(Dat$Map$Bacteria))
-# Dat.sub$Map$Experiment <- factor(m[,3],levels = levels(Dat$Map$Experiment))
 Dat.sub$Map <- droplevels(Dat.sub$Map)
 
-p1 <-  heatgg(Dat.sub,facet = ~ Phosphate + Bacteria,trans = "identity")
-dat <- p1$data
-rm(p1)
-gc()
-
-gos <- droplevels(subset(Annot,V1 %in% Res$Gene & V8 == 'P'))
-gos <- lapply(levels(gos$V6),function(x,gos, Annot){
-  d <- unique(as.character(subset(gos,V6 == x)$V1))
-  d <- data.frame(GO = x, Count = length(d))
-  a <- unique(subset(Annot, V6 == x)$V5)
-  d$Annotation <- as.character(a)
-  return(d)
-}, gos = gos, Annot = Annot)
-gos <- do.call(rbind,gos)
-gos <- gos[ order(gos$Count, decreasing = TRUE), ]
-head(gos, 50)
-
-
-selected_gos <- c('GO:0051707','core.pi')
-selected_gos <- c('GO:0051707')
-selected_gos <- c('GO:0006950')
-
+selected_gos <- c('GO:0006950')  #only works with length 1 for this plot
 dat <- lapply(selected_gos, function(x){
 
   genes <- subset(Annot,V6 == x)
@@ -451,15 +425,57 @@ dat <- lapply(selected_gos, function(x){
 })
 dat <- do.call(rbind,dat)
 
-aliases <- read.table("~/rhizogenomics/data/tair/gene_aliases_20130831.txt", sep = "\t", quote = "", comment.char = "", header = TRUE)
-head(aliases)
-aliases <- droplevels(subset(aliases, locus_name %in% Res$Gene))
-
-
 tab <- Dat.sub$Tab
 tab[tab > 3] <- 3
 tab[tab < -3] <- -3
 pal <- colorRampPalette(c("#8e0152","#de77ae",'white',"#7fbc41","#276419"))
+
+library(Heatplus)
+ann <- dat
+row.names(ann) <- ann$Gene
+ann <- ann[ row.names(tab), ]
+fc <- Res
+row.names(fc) <- fc$Gene
+fc <- fc[ row.names(ann), ]
+ann <- data.frame(Stress = dat[,1] > 0, logFC = fc$logFC)
+p1 <- Heatplus::annHeatmap2(tab,annotation = list(Row = list(data = ann, inclRef = FALSE)),
+                            cluster = list(Row = list(cuth = 6, col = c(pal(9)[3],pal(9)[1],pal(9)[3])),
+                                           Col = list(cuth = 9, col = c('grey',pal(9)[1],pal(9)[3]))),
+                            col = pal(11),
+                            breaks = seq(from = -3, to = 3, length.out = 12),
+                            legend = 2)
+svglite::svglite('heatmap_n130_n330.svg',width = 10,height = 10)
+Heatplus::plot.annHeatmap(p1, widths = c(1,2,6,1), heights = c(2,6,1))
+dev.off()
+
+
+
+# p1 <-  heatgg(Dat.sub,facet = ~ Phosphate + Bacteria,trans = "identity")
+# dat <- p1$data
+# rm(p1)
+# gc()
+#
+# gos <- droplevels(subset(Annot,V1 %in% Res$Gene & V8 == 'P'))
+# gos <- lapply(levels(gos$V6),function(x,gos, Annot){
+#   d <- unique(as.character(subset(gos,V6 == x)$V1))
+#   d <- data.frame(GO = x, Count = length(d))
+#   a <- unique(subset(Annot, V6 == x)$V5)
+#   d$Annotation <- as.character(a)
+#   return(d)
+# }, gos = gos, Annot = Annot)
+# gos <- do.call(rbind,gos)
+# gos <- gos[ order(gos$Count, decreasing = TRUE), ]
+# head(gos, 50)
+
+
+#
+#
+# aliases <- read.table("~/rhizogenomics/data/tair/gene_aliases_20130831.txt", sep = "\t", quote = "", comment.char = "", header = TRUE)
+# head(aliases)
+# aliases <- droplevels(subset(aliases, locus_name %in% Res$Gene))
+#
+
+
 # distfun <- function(x) vegan::vegdist(x = x, method = 'bray')
 # distfun <- function(x) as.dist(1 - cor(t(x)))
 tab <- tab[ Res$Gene[ order(Res$FDR) ], ]
@@ -473,21 +489,6 @@ gplots::heatmap.2(tab,margins = c(10,10), col = pal(11),
                   RowSideColors = c(NA,'black')[row.names(tab) %in% subset(Annot,V1 %in% row.names(tab) & V6 %in% selected_gos)$V1 + 1])
 
 #GO:0051707
-library(Heatplus)
-
-ann <- dat
-row.names(ann) <- ann$Gene
-ann <- ann[ row.names(tab), ]
-fc <- Res
-row.names(fc) <- fc$Res
-fc <- fc[ row.names(ann), ]
-ann <- data.frame(Stress = dat[,1] > 0, logFC = fc$logFC)
-# p1 <- Heatplus::annHeatmap.default(t(tab),annotation = ann)
-p1 <- Heatplus::annHeatmap2(tab,annotation = list(Row = list(data = ann, inclRef = FALSE)),
-                            cluster = list(Row = list(cuth = 6), Col = list(cuth = 9)),
-                            col = pal(11),
-                            breaks = seq(from = -3, to = 3, length.out = 12))
-Heatplus::plot.annHeatmap(p1, widths = c(2,6,1), heights = c(2,6,1))
 
 
 #
