@@ -281,10 +281,15 @@ p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
         strip.text = element_blank(),
         strip.background = element_blank(),
         panel.background = element_blank(),
+        plot.background = element_blank(),
         panel.grid = element_blank(),
         panel.border = element_blank())
 p1
+
 ggsave('heatmap_pos_neg.svg',p1, width = 7, height = 7)
+ggsave('heatmap_pos_neg.png',p1, width = 12, height = 12, dpi = 200)
+
+rm(dat,gos,Res,filename,selected_gos,p1)
 
 ############### Positive vs negative | 30 uM ##########
 filename <- paste("~/rhizogenomics/experiments/2017/today9/contrast/positive30uM_vs_negative30uM.txt")
@@ -335,9 +340,6 @@ dat$logFC[ dat$logFC < -10 ] <- -10
 dat$Type <- factor(dat$Type, levels = c('Gene',selected_gos))
 head(dat)
 
-
-
-
 p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
   facet_grid(~ Type, scales = "free_x") +
   geom_tile() +
@@ -358,6 +360,9 @@ p1 <- ggplot(dat,aes(x = Type, y = Gene, fill = logFC)) +
 p1
 
 ggsave('heatmap_pos30_neg30.svg',p1, width = 7, height = 7)
+ggsave('heatmap_pos30_neg30.png',p1, width = 12, height = 12, dpi = 250)
+
+rm(dat,gos,Res,filename,selected_gos,p1)
 
 ################ Compare negatives in both pre treatment #############
 filename <- "negativeplusp_vs_negativeminusP.txt"
@@ -383,6 +388,123 @@ data <- metacoder_plot_go(dat = Res,output_folder = "N1in30uM_vs_N3in30uM/",
                           min_fdr = 0.01,type = GO.db::GOBPPARENTS,
                           prefix = "gobp",n.supertaxa = 9,
                           num.changed = 3)
+
+
+
+
+# Heatmap version
+Res <- droplevels(subset(Res,FDR < 0.01))
+
+# Select data and aggregate
+Dat.sub <- create_dataset(t(scale(t(Dat.norm$Tab))),Dat.norm$Map,Dat.norm$Tax)
+
+# Dat.sub$Tab[ Dat.sub$Tab > 5] <- 5
+# Dat.sub$Tab[ Dat.sub$Tab < -5] <- -5
+# Dat.sub <- subset(Dat.sub, Phosphate %in% c('plusP_30uM','minusP_30uM') & (N1 == 1 | N3 == 1), drop = TRUE)
+Dat.sub <- subset(Dat.sub, Phosphate %in% c('plusP_30uM','minusP_30uM') & (N1 == 1 | N3 == 1 | Bacteria == 'No Bacteria'), drop = TRUE)
+
+Dat.sub <- remove_taxons(Dat.sub, taxons = setdiff(taxa(Dat.sub),as.character(Res$Gene)))
+Dat.sub$Map$Condition <- interaction(Dat.sub$Map$Phosphate,Dat.sub$Map$Bacteria,Dat.sub$Map$Experiment,drop = TRUE)
+Dat.sub$Map$Condition <- interaction(Dat.sub$Map$Phosphate,Dat.sub$Map$Bacteria,drop = TRUE)
+Dat.sub <- pool_samples.Dataset(Dat = Dat.sub,groups = 'Condition', FUN = mean)
+Dat.sub <- create_dataset(Tab = Dat.sub$Tab,
+                          Map = data.frame(Condition = samples(Dat.sub), row.names = samples(Dat.sub)),
+                          Tax = Dat.sub$Tax)
+m <- data.frame(do.call(rbind,strsplit(as.character(Dat.sub$Map$Condition),split = '[.]')))
+Dat.sub$Map$Phosphate <- factor(m[,1],levels = levels(Dat$Map$Phosphate))
+Dat.sub$Map$Bacteria <- factor(m[,2],levels = levels(Dat$Map$Bacteria))
+# Dat.sub$Map$Experiment <- factor(m[,3],levels = levels(Dat$Map$Experiment))
+Dat.sub$Map <- droplevels(Dat.sub$Map)
+
+p1 <-  heatgg(Dat.sub,facet = ~ Phosphate + Bacteria,trans = "identity")
+dat <- p1$data
+rm(p1)
+gc()
+
+gos <- droplevels(subset(Annot,V1 %in% Res$Gene & V8 == 'P'))
+gos <- lapply(levels(gos$V6),function(x,gos, Annot){
+  d <- unique(as.character(subset(gos,V6 == x)$V1))
+  d <- data.frame(GO = x, Count = length(d))
+  a <- unique(subset(Annot, V6 == x)$V5)
+  d$Annotation <- as.character(a)
+  return(d)
+}, gos = gos, Annot = Annot)
+gos <- do.call(rbind,gos)
+gos <- gos[ order(gos$Count, decreasing = TRUE), ]
+head(gos, 50)
+
+
+selected_gos <- c('GO:0051707','core.pi')
+selected_gos <- c('GO:0051707')
+
+
+dat <- lapply(selected_gos, function(x){
+
+  genes <- subset(Annot,V6 == x)
+  genes <- unique(as.character(genes$V1))
+
+  data.frame(logFC = 10*(Res$Gene %in% genes),
+             logCPM = NA, F = NA,
+             PValue = NA, FDR = NA,
+             Gene = Res$Gene,
+             Type = x)
+})
+dat <- do.call(rbind,dat)
+
+aliases <- read.table("~/rhizogenomics/data/tair/gene_aliases_20130831.txt", sep = "\t", quote = "", comment.char = "", header = TRUE)
+head(aliases)
+aliases <- droplevels(subset(aliases, locus_name %in% Res$Gene))
+
+
+tab <- Dat.sub$Tab
+tab[tab > 3] <- 3
+tab[tab < -3] <- -3
+pal <- colorRampPalette(c("#8e0152","#de77ae",'white',"#7fbc41","#276419"))
+# distfun <- function(x) vegan::vegdist(x = x, method = 'bray')
+# distfun <- function(x) as.dist(1 - cor(t(x)))
+tab <- tab[ Res$Gene[ order(Res$FDR) ], ]
+gplots::heatmap.2(tab,margins = c(10,10), col = pal(11),
+                  trace = 'none',
+                  scale = 'none',
+                  breaks = seq(from = -3, to = 3, length.out = 12),
+                  distfun = dist,
+                  #dendrogram = 'column',
+                  #Rowv = FALSE,
+                  RowSideColors = c(NA,'black')[row.names(tab) %in% subset(Annot,V1 %in% row.names(tab) & V6 %in% selected_gos)$V1 + 1])
+
+#GO:0051707
+
+
+#
+# dat$Abundance[ dat$Abundance > 3] <- 3
+# dat$Abundance[ dat$Abundance < -3 ] <- -3
+# dat$Block <- NA
+# dat$Block[ as.character(dat$Taxon) %in% Res$Gene[ Res$logFC > 0 ] ] <- 'N1'
+# dat$Block[ as.character(dat$Taxon) %in% Res$Gene[ Res$logFC < 0 ] ] <- 'N3'
+# dat$Taxon <- factor(dat$Taxon, levels = Res$Gene[ order(Res$logCPM) ])
+#
+# p1 <- ggplot(dat, aes(x = Taxon, y = SAMPLEID)) +
+#   facet_grid(Phosphate + Bacteria ~ Block, scales = "free",space = "free") +
+#   geom_tile(aes(fill = Abundance)) +
+#   # scale_fill_gradient2(na.value = NA) +
+#   scale_fill_gradient2(low =  c("#8e0152","#de77ae"),
+#                        mid = "#f7f7f7",
+#                        high = c("#7fbc41","#276419"),
+#                        midpoint = 0,
+#                        na.value = "#404040",
+#                        limits = c(-3,3),
+#                        guide = guide_colorbar(title = "z-score")) +
+#   theme(axis.text.y = element_blank(),
+#         axis.text.x = element_blank(),
+#         strip.text.y = element_text(angle = 0),
+#         panel.background = element_blank(),
+#         panel.spacing.y = unit(0,"lines"),
+#         axis.ticks = element_blank())
+# p1
+
+
+
+
 
 ################ N2 vs N3 in 30uM #############
 filename <- "N2in30uM_vs_N3in30uM.txt"
