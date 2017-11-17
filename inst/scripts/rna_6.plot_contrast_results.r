@@ -436,7 +436,7 @@ head(gos, 50)
 
 selected_gos <- c('GO:0051707','core.pi')
 selected_gos <- c('GO:0051707')
-
+selected_gos <- c('GO:0006950')
 
 dat <- lapply(selected_gos, function(x){
 
@@ -473,6 +473,21 @@ gplots::heatmap.2(tab,margins = c(10,10), col = pal(11),
                   RowSideColors = c(NA,'black')[row.names(tab) %in% subset(Annot,V1 %in% row.names(tab) & V6 %in% selected_gos)$V1 + 1])
 
 #GO:0051707
+library(Heatplus)
+
+ann <- dat
+row.names(ann) <- ann$Gene
+ann <- ann[ row.names(tab), ]
+fc <- Res
+row.names(fc) <- fc$Res
+fc <- fc[ row.names(ann), ]
+ann <- data.frame(Stress = dat[,1] > 0, logFC = fc$logFC)
+# p1 <- Heatplus::annHeatmap.default(t(tab),annotation = ann)
+p1 <- Heatplus::annHeatmap2(tab,annotation = list(Row = list(data = ann, inclRef = FALSE)),
+                            cluster = list(Row = list(cuth = 6), Col = list(cuth = 9)),
+                            col = pal(11),
+                            breaks = seq(from = -3, to = 3, length.out = 12))
+Heatplus::plot.annHeatmap(p1, widths = c(2,6,1), heights = c(2,6,1))
 
 
 #
