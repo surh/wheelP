@@ -438,7 +438,23 @@ fc <- Res
 row.names(fc) <- fc$Gene
 fc <- fc[ row.names(ann), ]
 ann <- data.frame(Stress = dat[,1] > 0, logFC = fc$logFC)
-p1 <- Heatplus::annHeatmap2(tab,annotation = list(Row = list(data = ann, inclRef = FALSE)),
+ann2 <- data.frame(do.call(rbind,strsplit(colnames(tab),split = "[.]")), stringsAsFactors = FALSE)
+colnames(ann2) <- c('Pi','Bacteria')
+ann2$Pi[ ann2$Pi == "plusP_30uM"] <- '+Pi'
+ann2$Pi[ ann2$Pi == "minusP_30uM"] <- '-Pi'
+ann2$Bacteria[ ann2$Bacteria == "I3N1"] <- 'N1'
+ann2$Bacteria[ ann2$Bacteria == "N1N2"] <- 'N1'
+ann2$Bacteria[ ann2$Bacteria == "P1N3"] <- 'N3'
+ann2$Bacteria[ ann2$Bacteria == "N2N3"] <- 'N3'
+ann2$Bacteria[ ann2$Bacteria == "P2N3"] <- 'N3'
+ann2$Bacteria[ ann2$Bacteria == "P3N3"] <- 'N3'
+ann2$Pi <- factor(ann2$Pi, levels = c('-Pi','+Pi'))
+ann2$Bacteria <- factor(ann2$Bacteria, levels = c('No Bacteria','N1','N3'))
+ann2$Bacteria <- NULL
+# ann2
+
+p1 <- Heatplus::annHeatmap2(tab,annotation = list(Row = list(data = ann, inclRef = FALSE, control = list(pch = 19)),
+                                                  Col = list(data = ann2, inclRef = FALSE)),
                             cluster = list(Row = list(cuth = 6, col = c(pal(9)[3],pal(9)[1],pal(9)[3])),
                                            Col = list(cuth = 9, col = c('grey',pal(9)[1],pal(9)[3]))),
                             col = pal(11),
