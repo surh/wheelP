@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -43,6 +43,7 @@ test_all_strains <- function(Strains, treatment_col,
 
   RES <- NULL
   PVAL <- NULL
+  SE <- NULL
   for(strain in Strains){
 
     # Select data
@@ -63,6 +64,7 @@ test_all_strains <- function(Strains, treatment_col,
                                 EndP.levels = EndP.levels)
     RES <- rbind(RES,res$Res)
     PVAL <- rbind(PVAL,res$Pval)
+    SE <- rbind(SE,res$SE)
 
     if(plot){
       filename <- paste(strain,"_mono.png",sep="")
@@ -74,5 +76,5 @@ test_all_strains <- function(Strains, treatment_col,
 
   # Multiple testing correction
   QVAL <- data.frame(Strain = PVAL$Strain, apply(PVAL[,-1],2,p.adjust,method='fdr'))
-  return(list(RES = RES, PVAL = PVAL, QVAL = QVAL))
+  return(list(RES = RES, SE = SE, PVAL = PVAL, QVAL = QVAL))
 }
