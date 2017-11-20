@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -59,6 +59,9 @@ row.names(r.squared) <- r.squared$Strain
 Dat <- data.frame(Strain = names(groups),Group = groups,
                   r.squared = r.squared[names(groups),"r.squared"] )
 head(Dat)
+
+# write.table(Dat, "~/rhizogenomics/experiments/2017/today10/clusters.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+write.table(Dat, "clusters.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 #b7-112
 

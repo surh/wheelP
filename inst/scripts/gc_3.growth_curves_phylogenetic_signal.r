@@ -1,17 +1,17 @@
 # (C) Copyright 2017 Sur Herrera Paredes
-# 
+#
 # This file is part of wheelP.
-# 
+#
 # wheelP is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # wheelP is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -33,7 +33,7 @@ feat <- read.table("~/rhizogenomics/data/phosphate/exudate_isolate_screening/fea
                    sep = "\t", header = TRUE, comment.char = "", row.names = 1)
 head(feat)
 
-# Homogenizing features with the rest of the info about growt cruves
+# Homogenizing features with the rest of the info about growth cruves
 setdiff(row.names(feat),Features$Strain)
 setdiff(Features$Strain,row.names(feat))
 
@@ -47,7 +47,7 @@ devtools::use_data(Features, pkg = "~/rhizogenomics/src/trunk/phosphate_code/whe
 gc.tree <- read.tree("~/rhizogenomics/experiments/2017/2017-02-27.growthcurves_phylosig/growth_curves_tree/filter/ref_aligned_pfiltered.tre")
 devtools::use_data(gc.tree, pkg = "~/rhizogenomics/src/trunk/phosphate_code/wheelP/",
                    overwrite = FALSE)
-rm(list = ls())
+rm(feat,Strain.auc,gc.tree,Features)
 ####################################################################
 # From here it should run without access to the flatfiles
 data(Strain.auc)
