@@ -16,7 +16,11 @@ devtools::install_github("surh/wheelP")
 
 # Referencing
 
-Please reference this repository's URL if using the code.
+If using the code of data, please reference this repository's URL, as well as the following:
+
+Herrera Paredes S, Gao T, Law TF, Finkel OM, Mucyn T, Texeira PJPL, Salas González I,
+Feltcher ME, Powers MJ, Shank EA, Jones CD, Jojic V, Dangl JL & Castrillo G. "A simplified
+framework for dissecting complex host-microbiota interactions" (2017). *In revision*.
 
 # Copyright & license
 
