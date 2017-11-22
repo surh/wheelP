@@ -2,7 +2,13 @@
 
 A number of Data objects are provided
 
-	All.filtered
+## *In vitro* assays
+
+*All.filtered
+	
+*Features
+
+## Binary plant-bacterium assays
 
 	Elongation
 	
@@ -12,7 +18,9 @@ A number of Data objects are provided
 	
 	binP
 	
-	Features
+## Synthetic community assays
+
+
 
 	Map.colonization
 
