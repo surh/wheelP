@@ -8,7 +8,7 @@ Raw sequence data can be found in the appropriate repositories ([GSE102248](http
 
 * **All.filtered** Data frame of individual OD600 measurements for 440 strains that were
 assayed *in vitro* and that passed quality control. Assays were performed in 96-well plates
-and measrumentes were taken over 72 hours. Data frame columns are as follows:
+and measurements were taken over 72 hours. Data frame columns are as follows:
 	* Row: row letter in the 96-well plate.
 	* Column: column number in the 96-well plate.
 	* OD600: optical density measurement at 600nm.
@@ -30,20 +30,38 @@ following columns:
 	(MP = minus2plusP, M = minusP, P = plusP, PM = plus2minusP).
 	* MP\_MGS, M\_MGS, P\_MGS, PM\_MGS: maximum growth rate achieved in each condtion
 	(MP = minus2plusP, M = minusP, P = plusP, PM = plus2minusP).
+	* PLF\_L3M, MLF\_L3M: log2 ratio of the mean OD600 in the last three measurements between each
+	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
+	* PLF\_MAX, MLF\_MAX: log2 ratio of the maximum optical density achieved between each
+	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
+	* PLF\_HMT, MLF\_HMT: log2 ratio of the mean time to reach half the maximum density between each
+	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
+	* PLF\_MGS, MLF\_MGS: log2 ratio of maximum growth rate achieved between each
+	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
 
 ## Binary plant-bacterium assays
 
-	Elongation
-	
-	Pi
-
-	binP.all
+* **binP.all** Individual plant shoot phosphate content measurements for plant-bacterium binary
+assays involving 194 bacterial strains. Data frame columns are as follows:
+	* sample: sample ID.
+	* Experiment: biological replicate batch ID.
+	* Replicate: biological replicate for the corresponding strain.
+	* Date: assay date.
+	* Experimenter: ID of individual who took the measurement.
+	* StarP: starting phosphate and sucrose conditions used for germination.
+	* EndP: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Treatment: Either bacterial strain ID or "No Bacteria" for controls.
+	* Pi\_content: plant shoot pi content measurement in (mmol Pi) / (mg FW), where FW stands for
+	shoot fresh weight.
+	* Bacteria: Indicating whether bacteria was added (+Bacteria) or not (No Bacteria).
 	
 	binP
 	
 ## Synthetic community assays
 
+	Pi
 
+* **Elongation** Main root elongation measurement
 
 	Map.colonization
 
