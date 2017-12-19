@@ -19,7 +19,7 @@ library(wheelP)
 library(ggplot2)
 #library(coefplot)
 
-setwd("~/rhizogenomics/experiments/2017/today11")
+# setwd("~/rhizogenomics/experiments/2017/today11")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 # source("/home/sur/rhizogenomics/src/trunk/phosphate_code/monoP/functions.r")
 

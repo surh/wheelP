@@ -18,7 +18,7 @@
 library(ggplot2)
 library(wheelP)
 
-# setwd("~/rhizogenomics/experiments/2017/today4/")
+# setwd("~/rhizogenomics/experiments/2017/today11")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 # source("/home/sur/rhizogenomics/src/trunk/phosphate_code/monoP/functions.r")
 
