@@ -14,6 +14,14 @@ You will require the devtools package. Once that package is installed just type:
 devtools::install_github("surh/wheelP")
 ```
 
+# Data
+
+The raw sequence data is available in the appropriate repositories. RNA-seq data is at NCBI GEO
+database unde accession [GSE102248](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE102248).
+Microbial profiling 16S gene sequencing is available at the EBI SRA under accession [PRJEB22060](https://www.ebi.ac.uk/ena/data/view/PRJEB22060).
+
+Other experimental data and data underlying figures is made available here as R package data. It can be accessed after installation using `data(<DATASETNAME>)` in the R console. A full description of all the available datasets can be found at the [DATASETS.md] file.
+
 # Referencing
 
 If using the code of data, please reference this repository's URL, as well as the following:
