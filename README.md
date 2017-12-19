@@ -20,7 +20,7 @@ The raw sequence data is available in the appropriate repositories. RNA-seq data
 database unde accession [GSE102248](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE102248).
 Microbial profiling 16S gene sequencing is available at the EBI SRA under accession [PRJEB22060](https://www.ebi.ac.uk/ena/data/view/PRJEB22060).
 
-Other experimental data and data underlying figures is made available here as R package data. It can be accessed after installation using `data(<DATASETNAME>)` in the R console. A full description of all the available datasets can be found at the [DATASETS.md] file.
+Other experimental data and data underlying figures is made available here as R package data. It can be accessed after installation using `data(<DATASETNAME>)` in the R console. A full description of all the available datasets can be found at the [DATASETS.md](DATASETS.md) file.
 
 # Referencing
 
