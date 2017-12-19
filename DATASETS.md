@@ -21,15 +21,15 @@ and measurements were taken over 72 hours. Data frame columns are as follows:
 are calculated from the growth data in **All.filtered**. The data frame includes the
 following columns:
 	* Strain: strain ID.
-	* minus2plusP, munisP, plus2minusP, plusP: log-transformed area under the growth curve (AUC)
+	* minus2plusP, minusP, plus2minusP, plusP: log-transformed area under the growth curve (AUC)
 	under each condition. The raw values are in the **Strain.auc** data frame.
-	* MP\_L3M, M\_L3M, P\_L3M, PM\_L3M: mean OD600 in the last three measurements in each condtion.
+	* MP\_L3M, M\_L3M, P\_L3M, PM\_L3M: mean OD600 in the last three measurements in each condition.
 	(MP = minus2plusP, M = minusP, P = plusP, PM = plus2minusP).
-	* MP\_MAX, M\_MAX, P\_MAX, PM\_MAX: maximum optical density achieved in each condtion
+	* MP\_MAX, M\_MAX, P\_MAX, PM\_MAX: maximum optical density achieved in each condition
 	(MP = minus2plusP, M = minusP, P = plusP, PM = plus2minusP).
-	* MP\_HMT, M\_HMT, P\_HMT, PM\_HMT: mean time to reach half the maximum density in each condtion
+	* MP\_HMT, M\_HMT, P\_HMT, PM\_HMT: mean time to reach half the maximum density in each condition
 	(MP = minus2plusP, M = minusP, P = plusP, PM = plus2minusP).
-	* MP\_MGS, M\_MGS, P\_MGS, PM\_MGS: maximum growth rate achieved in each condtion
+	* MP\_MGS, M\_MGS, P\_MGS, PM\_MGS: maximum growth rate achieved in each condition
 	(MP = minus2plusP, M = minusP, P = plusP, PM = plus2minusP).
 	* PLF\_L3M, MLF\_L3M: log2 ratio of the mean OD600 in the last three measurements between each
 	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
@@ -40,9 +40,9 @@ following columns:
 	* PLF\_MGS, MLF\_MGS: log2 ratio of maximum growth rate achieved between each
 	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
 
-* **Strain.auc** Raw area under the growth curve (AUC) for each of 440 tesed strains. Row names
+* **Strain.auc** Raw area under the growth curve (AUC) for each of 440 tested strains. Row names
 indicate strain ID. Columns of the data frame are as follows:
-	* minus2plusP, munisP, plus2minusP, plusP: Area under the growth curve (AUC) for each condition.
+	* minus2plusP, minusP, plus2minusP, plusP: Area under the growth curve (AUC) for each condition.
 
 ## Binary plant-bacterium assays
 
@@ -69,7 +69,7 @@ Columns of the data frame are as follows:
 	* minusP\_100uM.qval, minusP\_30uM.qval, plusP\_100uM.qval, plusP\_30uM.qval: Benjamini-Hochberg
 	corrected p-value of the effect of each bacterial strains on plant shoot pi content
 	in each condition.
-	* Mean: mean log(fold-change) of shoot pi content caused by bacteria across all condtions.
+	* Mean: mean log(fold-change) of shoot pi content caused by bacteria across all conditions.
 	* Group: group to which a strain belongs (positive, negative, indifferent or none).
 	
 ## Synthetic community assays
@@ -77,7 +77,7 @@ Columns of the data frame are as follows:
 * **Elongation** Main root elongation measurements for individual plants treated with synthetic
 communities. Measurements where made from pictures in imageJ. Columns of the data frame are as follows:
 	* Picture: picture ID.
-	* Treatment: string indicating the combination of phosphate conditions and bacterial tretment.
+	* Treatment: string indicating the combination of phosphate conditions and bacterial treatment.
 	* Elongation: main root elongation measurement in cm.
 	* Experiment: biological replicate batch ID.
 	* Plate: petri dish ID.
@@ -85,7 +85,7 @@ communities. Measurements where made from pictures in imageJ. Columns of the dat
 	* EndP: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
 	* Bacteria: ID of synthetic community added, or none.
 
-* **Pi** Plate level phenptypic measurement for plants treated with synthetic communities. Columns
+* **Pi** Plate level phenotypic measurement for plants treated with synthetic communities. Columns
 of the data frame are as follows:
 	* id: measurement id
 	* empty\_tubes: weight (mg) of empty eppendorf tubes prior to sample collection.
@@ -122,10 +122,10 @@ sequencing. The columns of the data frame are as follows:
 	* Frameshift: ID of the frameshifted primer combination used for library preparation.
 	* Sample\_ID: ID for the sequencing machine.
 	* Sample\_Name: sample name for the sequencing machine.
-	* Sample\_plate: sample plate for the sequecing machine.
+	* Sample\_plate: sample plate for the sequencing machine.
 	* Sample\_Well: sample well in 96-well plate.
 	* I7\_index\_ID: ID of index (outer barcode) used for multiplexing.
-	* index: sequenc of index (outer barcode) used for multiplexing.
+	* index: sequence of index (outer barcode) used for multiplexing.
 	* Fraction: sample fraction (Root, Agar or Inoculum).
 	* rnaID: ID of corresponding RNA-seq library from the same sample.
 	* AgarGroup: Grouping factor indicating samples that came from the same plate (agar environment).
@@ -133,7 +133,7 @@ sequencing. The columns of the data frame are as follows:
 	was treated with each of the 9 bacterial functional blocks.
 	* Pre.Pi: starting phosphate and sucrose conditions used for germination.
 	* Pos.Pi: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
-	* Inoculated: Inidicates whether bacteria was applied (+Bacteria) or not (No Bacteria).
+	* Inoculated: indicates whether bacteria was applied (+Bacteria) or not (No Bacteria).
 
 * **Tax.colonization** Taxonomy and block allocation of bacteria used in synthetic community experiments.
 The columns of the data frame are as follows:
