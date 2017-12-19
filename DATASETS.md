@@ -105,23 +105,68 @@ of the data frame are as follows:
 	* total.root: total root network length per plate (cm).
 	* Plate: petri dish ID.
 
+* **Map.colonization**: Metadata for samples that underwent microbial profiling via 16S gene
+sequencing. The columns of the data frame are as follows:
+	* ID: sample ID.
+	* Well: position of the well that contained the sample for DNA extraction and all downstream
+	sequencing library preparation.
+	* SampleID: internal ID.
+	* Genotype: plant genotype.
+	* Bacteria: ID of synthetic community in sample or "No Bacteria".
+	* Phosphate: descriptive string indicating phosphate treatment.
+	* Replicate: replicate number within experimental batch.
+	* Experiment: biological replicate batch for the current sample.
+	* Plate: ID of plate for DNA extraction and all downstream library preparation steps.
+	* Run: MiSeq run ID for 16S sequencing.
+	* Barcode2: ID of the inner barcode used for multiplexing.
+	* Frameshift: ID of the frameshifted primer combination used for library preparation.
+	* Sample\_ID: ID for the sequencing machine.
+	* Sample\_Name: sample name for the sequencing machine.
+	* Sample\_plate: sample plate for the sequecing machine.
+	* Sample\_Well: sample well in 96-well plate.
+	* I7\_index\_ID: ID of index (outer barcode) used for multiplexing.
+	* index: sequenc of index (outer barcode) used for multiplexing.
+	* Fraction: sample fraction (Root, Agar or Inoculum).
+	* rnaID: ID of corresponding RNA-seq library from the same sample.
+	* AgarGroup: Grouping factor indicating samples that came from the same plate (agar environment).
+	* P1, P2, P3, I1, I2, I3, N1, N2, N3: indicator variables showing whether a sample
+	was treated with each of the 9 bacterial functional blocks.
+	* Pre.Pi: starting phosphate and sucrose conditions used for germination.
+	* Pos.Pi: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Inoculated: Inidicates whether bacteria was applied (+Bacteria) or not (No Bacteria).
 
+* **Tax.colonization** Taxonomy and block allocation of bacteria used in synthetic community experiments.
+The columns of the data frame are as follows:
+	* ID: strain ID.
+	* Taxonomy: taxonomy string.
+	* Type: functional class of strain.
+	* Block: functional block of strain.
+	* MonoID: ID of strain in plant-bacterium binary assays.
 
+* **dge.wheel** DGEList object. Full RNA-seq gene counts for synthetic community assays.
+The count matrix is also available at GEO together with the raw sequence data 
+([GSE102248](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE102248)). See the documentation
+for the [edgeR](http://bioconductor.org/packages/release/bioc/html/edgeR.html) package for
+more details on the object.
 
-	Map.colonization
+* **wheelP.full** A Dataset object. Contains the sequence counts of each strain on each sample that
+was profiled via 16S gene sequencing, as well as the sample metadata and strain taxonomic information.
+The counts were obtained by mapping all reads against all reference sequences. See the documentation
+of the [AMOR](https://github.com/surh/AMOR) package for more details on the object.
 
-	
+* **wheelP.mapsplit** A Dataset object. Contains the sequence counts of each strain on each sample that
+was profiled via 16S gene sequencing, as well as the sample metadata and strain taxonomic information.
+The counts were obtained by mapping reads against reference sequences of strains added to each specific
+samples. See the documentation of the [AMOR](https://github.com/surh/AMOR) package for more
+details on the object.
 
-	Tax.colonization
+* **wheelP.rna** A Dataset object. Contains the sequence counts of each plant gene for each sample that
+was profiled via RNA-seq, as well as the sample metadata and strain taxonomic information.
+The counts were correspond to the counts in the **dge.wheel** object. See the documentation
+of the [AMOR](https://github.com/surh/AMOR) package for more details on the object.
 
+## Data from figures
 
-
-	dge.wheel
-
-	wheelP.full
-
-	wheelP.mapsplit
-
-	wheelP.rna
-
-## Underlying figure data
+Below we describe some data objects that contain the numeric values that underlie several
+figures in the associated manuscript. All the numbers below were calculated from data in
+the above objects and is therefore redundant but it is provided for the sake of completeness.
