@@ -54,14 +54,24 @@ assays involving 194 bacterial strains. Data frame columns are as follows:
 	* Pi\_content: plant shoot pi content measurement in (mmol Pi) / (mg FW), where FW stands for
 	shoot fresh weight.
 	* Bacteria: Indicating whether bacteria was added (+Bacteria) or not (No Bacteria).
-	
-	binP
+
+* **binP** Results of testing for the effect of individual bacterial strains on plant shoot phosphate
+accumulation in plant-bacterium binary assays. All results are derived from data in **binP.all**.
+Columns of the data frame are as follows:
+	* Strain: strain ID.
+	* minusP\_100uM, minusP\_30uM, plusP\_100uM, plusP\_30uM: log(fold-change) in plant shoot
+	pi content caused by bacteria with respect to no bacteria controls in each condition.
+	* minusP\_100uM.qval, minusP\_30uM.qval, plusP\_100uM.qval, plusP\_30uM.qval: Benjamini-Hochberg
+	corrected p-value of the effect of each bacterial strains on plant shoot pi content
+	in each condition.
+	* Mean: mean log(fold-change) of shoot pi content caused by bacteria across all condtions.
+	* Group: group to which a strain belongs (positive, negative, indifferent or none).
 	
 ## Synthetic community assays
 
+* **Elongation** Main root elongation measurement
 	Pi
 
-* **Elongation** Main root elongation measurement
 
 	Map.colonization
 
