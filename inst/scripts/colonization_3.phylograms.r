@@ -17,7 +17,7 @@
 
 library(AMOR)
 library(wheelP)
-# setwd("~/rhizogenomics/experiments/2017/today3/")
+# setwd("~/rhizogenomics/experiments/2017/today11/")
 
 data(wheelP.mapsplit)
 Dat <- wheelP.mapsplit
