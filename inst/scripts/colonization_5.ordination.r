@@ -63,4 +63,7 @@ p1 <- ggplot(Dat$Map, aes(x = MDS1, y = MDS2, col = Fraction, fill = Fraction)) 
 
 p1
 ggsave("colonization_mds_conditioned.svg",p1, width = 4, height = 4)
+dir.create("figuredata/")
+figS6A <- p1$data
+save(figS6A, file = "figuredata/figS6A.rda")
 
