@@ -19,7 +19,7 @@ library(AMOR)
 library(wheelP)
 library(edgeR)
 
-setwd("~/rhizogenomics/experiments/2017/today7/corepi_picontent/")
+# setwd("~/rhizogenomics/experiments/2017/today11")
 # devtools::document("~/rhizogenomics/src/trunk/phosphate_code/wheelP/")
 
 data(wheelP.rna)
@@ -180,6 +180,9 @@ p1 <- ggplot(Res.sc,aes(x = Measured, y = Predicted)) +
                                   size = 22))
 p1
 ggsave('corepi.additivity.svg',p1,width = 7, height = 7)
+dir.create("figuredata/")
+fig5B <- p1$data
+save(fig5B, file = "figuredata/fig5B.rda")
 
 
 ########## Core pi vs pi content
@@ -238,6 +241,9 @@ p1 <- ggplot(subset(dat, EndP == '30 uM,0%Suc'),aes(x = Pi_content, y = core.ind
   theme_classic()
 p1
 ggsave('corepi_vs_pi.svg', p1, width = 4, height = 5)
+dir.create("figuredata/")
+figS8 <- p1$data
+save(figS8, file = "figuredata/figS8.rda")
 
 #### THE FOLLOWING SECTION IS INCORRECT!!
 #### IT CALCULATES GOODNESS OF FIT OF ADDITIVE ONLY MODEL
