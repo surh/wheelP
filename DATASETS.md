@@ -21,7 +21,8 @@ and measurements were taken over 72 hours. Data frame columns are as follows:
 are calculated from the growth data in **All.filtered**. The data frame includes the
 following columns:
 	* Strain: strain ID.
-	* minus2plusP, munisP, plus2minusP, plusP: Area under the curve (AUC) under each condition
+	* minus2plusP, munisP, plus2minusP, plusP: log-transformed area under the growth curve (AUC)
+	under each condition. The raw values are in the **Strain.auc** data frame.
 	* MP\_L3M, M\_L3M, P\_L3M, PM\_L3M: mean OD600 in the last three measurements in each condtion.
 	(MP = minus2plusP, M = minusP, P = plusP, PM = plus2minusP).
 	* MP\_MAX, M\_MAX, P\_MAX, PM\_MAX: maximum optical density achieved in each condtion
@@ -38,6 +39,10 @@ following columns:
 	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
 	* PLF\_MGS, MLF\_MGS: log2 ratio of maximum growth rate achieved between each
 	exudate condition and its control (PLF = log2(minus2plusP/plusP), MLF = log2(plus2minusP/minusP).
+
+* **Strain.auc** Raw area under the growth curve (AUC) for each of 440 tesed strains. Row names
+indicate strain ID. Columns of the data frame are as follows:
+	* minus2plusP, munisP, plus2minusP, plusP: Area under the growth curve (AUC) for each condition.
 
 ## Binary plant-bacterium assays
 
@@ -69,14 +74,43 @@ Columns of the data frame are as follows:
 	
 ## Synthetic community assays
 
-* **Elongation** Main root elongation measurement
-	Pi
+* **Elongation** Main root elongation measurements for individual plants treated with synthetic
+communities. Measurements where made from pictures in imageJ. Columns of the data frame are as follows:
+	* Picture: picture ID.
+	* Treatment: string indicating the combination of phosphate conditions and bacterial tretment.
+	* Elongation: main root elongation measurement in cm.
+	* Experiment: biological replicate batch ID.
+	* Plate: petri dish ID.
+	* StarP: starting phosphate and sucrose conditions used for germination.
+	* EndP: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Bacteria: ID of synthetic community added, or none.
+
+* **Pi** Plate level phenptypic measurement for plants treated with synthetic communities. Columns
+of the data frame are as follows:
+	* id: measurement id
+	* empty\_tubes: weight (mg) of empty eppendorf tubes prior to sample collection.
+	* full\_tubes: weight (mg) of eppendorf tubes with sample.
+	* mgFW: estimated sample weight (mg).
+	* OD820nm: optical density measurement at 820nm used to estimate shoot Pi content.
+	* Pi\_content: shoot phosphate content  in (mmol Pi) / (mg FW).
+	* Experiment: biological replicate batch ID.
+	* shoot\_area: Shoot area (cm^2) estimated with winrhizo.
+	* Nplants: number of plants in plate.
+	* Elongation: mean main root elongation for plants in the same plate (derived from
+	**Elongation** data frame).
+	* StarP: starting phosphate and sucrose conditions used for germination.
+	* EndP: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Bacteria: ID of synthetic community added, or none.
+	* order: sample processing order.
+	* total.root: total root network length per plate (cm).
+	* Plate: petri dish ID.
+
+
 
 
 	Map.colonization
 
 	
-	Strain.auc
 
 	Tax.colonization
 
