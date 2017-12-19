@@ -44,6 +44,9 @@ following columns:
 indicate strain ID. Columns of the data frame are as follows:
 	* minus2plusP, minusP, plus2minusP, plusP: Area under the growth curve (AUC) for each condition.
 
+* **gc.tree** A phylo object that defines a phylogenetic tree of 395 strains that were tested *in vitro*,
+passed quality control, and ahad a full length 16S gene Sanger sequence.
+
 ## Binary plant-bacterium assays
 
 * **binP.all** Individual plant shoot phosphate content measurements for plant-bacterium binary
@@ -164,6 +167,10 @@ details on the object.
 was profiled via RNA-seq, as well as the sample metadata and strain taxonomic information.
 The counts were correspond to the counts in the **dge.wheel** object. See the documentation
 of the [AMOR](https://github.com/surh/AMOR) package for more details on the object.
+
+* **m1.wheel** A DGEGLM object. A fitted model of the RNA-seq data in **dge.wheel**.
+See the documentation for the [edgeR](http://bioconductor.org/packages/release/bioc/html/edgeR.html)
+package for more details on the object.
 
 ## Data from figures
 
