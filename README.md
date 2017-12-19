@@ -24,7 +24,7 @@ Other experimental data and data underlying figures is made available here as R 
 
 # Referencing
 
-If using the code of data, please reference this repository's URL, as well as the following:
+If using the code or data, please reference this repository's URL, as well as the following:
 
 Herrera Paredes S, Gao T, Law TF, Finkel OM, Mucyn T, Texeira PJPL, Salas González I,
 Feltcher ME, Powers MJ, Shank EA, Jones CD, Jojic V, Dangl JL & Castrillo G. "A simplified
