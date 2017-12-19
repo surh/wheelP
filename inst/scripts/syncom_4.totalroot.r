@@ -81,37 +81,6 @@ Res2 <- test_single_block_phenptype(Phen = Dat,
                                     confounders = c("Experiment"),
                                     use_abun = FALSE)
 
-# singlecoms <- paste(rep(c("P","I","N"),each = 3),rep(1:3,times = 3),sep="")
-#
-# Res2 <- NULL
-# for(i in 1:2){
-#   for(j in 1:2){
-#     m1 <- block_effects(Dat = Dat, cond1 = i, cond2 = j,
-#                         var.name = "total.root",
-#                         keep.vars = c("Experiment"))
-#     m1.sum <- summary(m1)
-#
-#     res <- data.frame(SynCom = singlecoms, StartP = levels(Dat$StartP)[i],
-#                       EndP = levels(Dat$EndP)[j],
-#                       Estimate = m1.sum$coefficients[ singlecoms, 1 ],
-#                       SE = m1.sum$coefficients[ singlecoms, 2 ],
-#                       t.value = m1.sum$coefficients[ singlecoms, 3 ],
-#                       p.value = m1.sum$coefficients[ singlecoms, 4 ])
-#     Res2 <- rbind(Res2,res)
-#     # p1 <- coefplot(m1, intercept = FALSE,innerCI = 1, outerCI = 2,
-#     #                coefficients = singlecoms,
-#     #                lwdOuter = 0.5, lwdInner = 2.5, pointSize = 4,
-#     #                color = "black", zeroColor = "red", zeroType = 1)
-#     # p1 <- p1 + theme(axis.text.y = element_text(color = "black"),
-#     #                  panel.border = element_rect(fill = NA, color = "black", size = 2),
-#     #                  panel.background = element_rect(fill = "white")) +
-#     #   ggtitle(paste(levels(Dat$StartP)[i],"=>",levels(Dat$EndP)[j]))
-#     # p1
-#     #
-#     # filename <- paste(dir,"/coefplot_",i,j,".png",sep = "")
-#     # ggsave(filename = filename, p1 , width = 3.5, height = 5)
-#   }
-# }
 write.table(Res2,"totalroot_block_test.txt",
             sep = "\t", quote = FALSE, row.names = FALSE)
 
@@ -119,33 +88,6 @@ write.table(Res2,"totalroot_block_test.txt",
 # with measured effects
 Pred <- predict_from_main(dat = Res, Res.main = Res2)
 head(Pred)
-
-# # Format observed effects
-# dat <- Res
-# dat$Block1 <- substring(dat$SynCom,1,2)
-# dat$Block2 <- substring(dat$SynCom,3,4)
-# dat$Block1 <- factor(dat$Block1 , levels = singlecoms)
-# dat$Block2 <- factor(dat$Block2 , levels = rev(singlecoms))
-#
-# # Predict from main effects
-# Pred <- NULL
-# for(i in 1:nrow(Res)){
-#   # i <- 1
-#   index1 <- Res2$StartP == dat$StartP[i] &
-#     Res2$EndP == dat$EndP[i] &
-#     Res2$SynCom == dat$Block1[i]
-#   index2 <- Res2$StartP == dat$StartP[i] &
-#     Res2$EndP == dat$EndP[i] &
-#     Res2$SynCom == dat$Block2[i]
-#   additiveguess <- Res2$Estimate[index1] + Res2$Estimate[index2]
-#
-#   res <- data.frame(SynCom = paste(Res2$SynCom[index1],Res2$SynCom[index2],sep = ""),
-#                     StartP = dat$StartP[i], EndP = dat$EndP[i],
-#                     Estimate = additiveguess, SE = NA, t.value = NA,
-#                     p.value = NA, Block1 = Res2$SynCom[index2],
-#                     Block2 = Res2$SynCom[index1])
-#   Pred <- rbind(Pred,res)
-# }
 
 singlecoms <- paste(rep(c("P","I","N"),each = 3),rep(1:3,times = 3),sep="")
 Full <- Res
@@ -195,3 +137,6 @@ p1 <- ggplot(Res,aes(x = Measured, y = Predicted)) +
                                   size = 22))
 p1
 ggsave("totalroot_images/estimate_vs_pred.svg",p1, width = 7, height = 7)
+dir.create("figuredata/")
+fig4.totalroot <- p1$data
+save(fig4.totalroot, file = "figuredata/fig4.totalroot.rda")
