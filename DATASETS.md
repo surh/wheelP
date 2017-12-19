@@ -6,11 +6,15 @@ Raw sequence data can be found in the appropriate repositories ([GSE102248](http
 
 ## *In vitro* assays
 
-* **All.filtered**	Data frame of individual OD600 measurements for 440 strains that were assayed
-			*in vitro* and that passed quality control. Data frame columns are as follows:
-			Row (row letter in the 96-well plate), Column (column in the 96-well plates).
+* **All.filtered** Data frame of individual OD600 measurements for 440 strains that were
+assayed *in vitro* and that passed quality control. Assays were performed in 96-well plates
+and measrumentes were taken over 72 hours. Data frame columns are as follows:
+	* Row (row letter in the 96-well plate),
+	* Column (column number in the 96-well plate), OD600 (optical
+density measurement at 600nm), rep (replicate number), hrs (time-point in hours when
+the measurement was taken), Strain (strain ID), condition (phosphate and exudate condition).
 	
-* Features
+* **Features** Data frame of *in vitro* growth features 
 
 ## Binary plant-bacterium assays
 
