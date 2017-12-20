@@ -263,4 +263,22 @@ Columns of the data frame are as follows:
 	simply presence/absence (Block).
 	* Phenotype: phenotype being analyzed.
 
+* **pi.phu.cfu** Numeric values that underlie figure 2D and figure S3A. Directly obtained from
+the experimenter. Columns of the data frame are as follows:
+	* ID: sample ID.
+	* Pre.treatment: Pre treatment utilized for germination: +Phi(1 mM Phi),
+	+Pi(1 mM Pi), or -Pi(5 uM Pi).
+	* Treatment: Pi level at the time of bacterial application.
+	* Strain: Strain ID used in the sample.
+	* Fraction: Sample fraction: SHOOT, AGAR, or ROOT.
+	* CFU: colony forming units (c.f.u.) per fresh weight. Units are c.f.u./mL\*FW.
+	* log.cfu: log of the c.f.u. per mL.
+	* Replicate: biological replicate batch ID.
+
+* **pre.treatments** Numeric values underlying figure S3B. Directly obtained from the experimenter.
+Columns of the data frame are as follows:
+	* Sample: sample ID.
+	* Experiment: biological replicate batch ID.
+	* Pre.pi: Pre-treatment phosphate and phosphite levels used for germination.
+	* Pi\_content: Plant shoot pi content. Units are mmol/mgFW.
 
