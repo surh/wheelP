@@ -1,10 +1,13 @@
 # wheelP
 
-Code and data for analysis of the effect of bacterial blocks on plant phosphate
-accumulation and other related plant phenotypes.
+Code and data for analysis described in the manuscript: "Design of synthetic bacterial
+communities for predicable plant phenotypes".
 
 This is an R package that is distributed with the aim on ensuring reproducibility.
 The code was designed and tested to work specifically with the data in the package.
+
+For the code that fits the neural network visit our sister repository
+[wheelPi](https://github.com/clingsz/wheelPi).
 
 # Installation
 
