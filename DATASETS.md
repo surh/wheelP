@@ -177,3 +177,90 @@ package for more details on the object.
 Below we describe some data objects that contain the numeric values that underlie several
 figures in the associated manuscript. All the numbers below were calculated from data in
 the above objects and is therefore redundant but it is provided for the sake of completeness.
+
+* **group.colonization** These are the numeric values underlying figures S6B-C and fig12. They were
+obtained directly from **wheelP.mapsplit** Dataset object. Columns of the data frame are as
+follows:
+	* Sample: internal sample ID.
+	* ID: sequence library ID.
+	* Bacteria: ID of syncom that was added to sample.
+	* Fraction: Sample fraction (Agar, Root or Inoculum).
+	* Pre.Pi: starting phosphate and sucrose conditions used for germination.
+	* Pos.Pi: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Taxon: Grouping factor for abundances, corresponds to color bars in figures. It is either
+	a taxonomic string at the Order level, or a functional block ID.
+	* Abundance: Total count of strains of the given taxon or block in the specified sample.
+	* Set: Indicates whether the sample is part of the original set of synthetic communities (Wheel),
+	or part of the validation ("Validation") set.
+	* Color: Inidicates whether the Taxon column corresponds to a taxonomic string for bacterial
+	Order (Order) or functional block ID (Block).
+
+* **mds.colonization** These are the numeric values that underlie figure S6A. They were calculated
+directly from Dataset **wheelP.mapsplit**. Columns of the data frame are as follows.
+	* ID: sample ID.
+	* Well: position of the well that contained the sample for DNA extraction and all downstream
+	sequencing library preparation.
+	* SampleID: internal ID.
+	* Genotype: plant genotype.
+	* Bacteria: ID of synthetic community in sample or "No Bacteria".
+	* Phosphate: descriptive string indicating phosphate treatment.
+	* Replicate: replicate number within experimental batch.
+	* Experiment: biological replicate batch for the current sample.
+	* Plate: ID of plate for DNA extraction and all downstream library preparation steps.
+	* Run: MiSeq run ID for 16S sequencing.
+	* Barcode2: ID of the inner barcode used for multiplexing.
+	* Frameshift: ID of the frameshifted primer combination used for library preparation.
+	* Sample\_ID: ID for the sequencing machine.
+	* Sample\_Name: sample name for the sequencing machine.
+	* Sample\_plate: sample plate for the sequencing machine.
+	* Sample\_Well: sample well in 96-well plate.
+	* I7\_index\_ID: ID of index (outer barcode) used for multiplexing.
+	* index: sequence of index (outer barcode) used for multiplexing.
+	* Fraction: sample fraction (Root, Agar or Inoculum).
+	* rnaID: ID of corresponding RNA-seq library from the same sample.
+	* AgarGroup: Grouping factor indicating samples that came from the same plate (agar environment).
+	* P1, P2, P3, I1, I2, I3, N1, N2, N3: indicator variables showing whether a sample
+	was treated with each of the 9 bacterial functional blocks.
+	* Pre.Pi: starting phosphate and sucrose conditions used for germination.
+	* Pos.Pi: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Inoculated: indicates whether bacteria was applied (+Bacteria) or not (No Bacteria).
+	* Depth: number of reads in the samples.
+	* Usable: number of non plant-derived reads in sample.
+	* MDS1, MDS2, MDS3, MDS4, MDS5, MDS6: Multi-dimensional scaling axes.
+
+* **phen.additivity** Numeric values underlying figure 4 and figure 5B. Calculated directly from
+the **Elongation** and **Pi** data frames. Columns of the data frame are as follows:
+	* SynCom: Synthetic community ID.
+	* StartP: starting phosphate and sucrose conditions used for germination.
+	* EndP: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Estimate: linear model coefficient indicating the expected synthetic community effect
+	on the corresponding plant phenotype.
+	* SE: standard error of the estimate.
+	* t.value: t-value of the estimate.
+	* p.value: two-sided p.value testing the null hypothesis that the true value of
+	the estimate is zero.
+	* Measured: measured change in plant phenotype due to bacteria.
+	* Predicted: predicted change in plant phenotype based on simple additive model.
+	* SE.pred: standard error of the predicted phenotypic change.
+	* Phenotype: phenotype being analyzed.
+
+* **phen.presence.abundance** Numeric values underlying figure S7. Calculated directly from
+the **Elongation** and **Pi** data frames, together with the **wheelP.mapsplit** Dataset.
+Columns of the data frame are as follows:
+	* SynCom: Synthetic community ID.
+	* StartP: starting phosphate and sucrose conditions used for germination.
+	* EndP: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
+	* Estimate: linear model coefficient indicating the expected synthetic community effect
+	on the corresponding plant phenotype.
+	* SE: standard error of the estimate.
+	* t.value: t-value of the estimate.
+	* p.value: two-sided p.value testing the null hypothesis that the true value of
+	the estimate is zero.
+	* Measured: measured change in plant phenotype due to bacteria.
+	* Predicted: predicted change in plant phenotype based on simple additive model.
+	* SE.pred: standard error of the predicted phenotypic change.
+	* Type: Indicates whether the additive model included relative abundances (Abundance) or
+	simply presence/absence (Block).
+	* Phenotype: phenotype being analyzed.
+
+
