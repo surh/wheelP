@@ -1,11 +1,11 @@
 Package: wheelP
 Type: Package
-Title: Phosphate modulation by bacterial consortia (Title Case)
-Version: 0.0.2
+Title: Designing synthetic bacterial communities for predictable plant phenotypes
+Version: 0.1.0
 Author: Sur Herrera Paredes
 Maintainer: Sur Herrera Paredes <sur00mx@gmail.com>
-Description: Code and data for analysis of the effect of bacterial blocks on plant
-    phosphate accumulation and other related plant phenotypes.
+Description: Code and data for designing synthetic bacterial communities
+    for predictable plant phenotypes.
 Imports:
     AMOR (>= 0.0-15),
     reshape2,
