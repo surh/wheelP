@@ -246,7 +246,7 @@ The columns of the data frame are as follows:
 	* ContextID: ID of the context (i.e. combination of input variables).
 	* minusP.2.plusP: The effect of changing the starting phosphate contions from -Pi, to +Pi
 	on plant shoot phosphate accumulation.
-	* X30uM.2.100uM: The effect of changing the ending phosphate contions from 30 \mu M to 100 \mu M
+	* X30uM.2.100uM: The effect of changing the ending phosphate contions from 30 \mu M to 100 $\mu$ M
 	on plant shoot phosphate accumulation.
 	* P1, P2, P3, I1, I2, I3, N1, N2, N3: The effect of each functional bacterial block on
 	plant shoot phosphate accumulation.
