@@ -307,9 +307,6 @@ For more details on its calculation please visit the sister repository
 	* INT: The prediction error for the linear model with interactions.
 	* NN: The prediction error for the neural network.
 
-For more details on its calculation please visit the sister repository
-[wheelPi](https://github.com/clingsz/wheelPi). The columns of the data frame are as follows:
-
 * **pre.treatments** Numeric values underlying figure S3B. Directly obtained from the experimenter.
 Columns of the data frame are as follows:
 	* Sample: sample ID.
