@@ -246,7 +246,7 @@ The columns of the data frame are as follows:
 	* ContextID: ID of the context (i.e. combination of input variables).
 	* minusP.2.plusP: The effect of changing the starting phosphate contions from -Pi, to +Pi
 	on plant shoot phosphate accumulation.
-	* X30uM.2.100uM: The effect of changing the ending phosphate contions from 30 \muM to 100 \muM
+	* X30uM.2.100uM: The effect of changing the ending phosphate contions from 30 \mu M to 100 \mu M
 	on plant shoot phosphate accumulation.
 	* P1, P2, P3, I1, I2, I3, N1, N2, N3: The effect of each functional bacterial block on
 	plant shoot phosphate accumulation.
@@ -306,3 +306,23 @@ Columns of the data frame are as follows:
 	* Pre.pi: Pre-treatment phosphate and phosphite levels used for germination.
 	* Pi\_content: Plant shoot pi content. Units are mmol/mgFW.
 
+* **signal.noise.ratio** These are the numeric values underlying figure S11. The numbers
+are the signal and noise variances for each plant phenotype. The ratio of these variances 
+(i.e. the signal to noise ratio) determines the feasibility of predictive modelling.
+For more details on its calculation please visit the sister repository
+[wheelPi](https://github.com/clingsz/wheelPi). The columns of the data frame are as follows:
+	* Phenotype: The plant phenotype.
+	* Which: Indicates whether the row corresponds to a noise (Noise.var) or signal (Signal.var)
+	variance.
+	* Variance: The signal or noise variance value for the corresponding phenotype.
+
+
+* **validation.predicted.observed.** These are the numeric values underlying figure 7E. The numbers
+are the predicted and observed plant shoot phosphate accumulation upon synthetic community
+block replacements. The columns of the data frame are as follows:
+	* Change.ID: Descriptive string indicating the block replacement.
+	* NN.pred: The predicted change in plant shoot phosphate accumulation by
+	the neural network.
+	* observed: The observed change in plant shoot phosphate accumulation.
+	* Significant: flag indicating if the observed change in plant shoot phosphate
+	accumulation was significant (1) or not (0).
