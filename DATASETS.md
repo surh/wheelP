@@ -184,7 +184,8 @@ follows:
 	* Sample: internal sample ID.
 	* ID: sequence library ID.
 	* Bacteria: ID of syncom that was added to sample.
-	* Fraction: Sample fraction (Agar, Root or Inoculum).
+	* Fraction: Grouping factor indicating the sample fraction (Agar, Root or Inoculum), or
+	whether the values correspond to theoretical expecttations ("Theoretical").
 	* Pre.Pi: starting phosphate and sucrose conditions used for germination.
 	* Pos.Pi: ending phosphate and sucrose conditions that were applied concomitant with bacteria.
 	* Taxon: Grouping factor for abundances, corresponds to color bars in figures. It is either
