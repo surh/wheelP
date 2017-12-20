@@ -246,7 +246,7 @@ The columns of the data frame are as follows:
 	* ContextID: ID of the context (i.e. combination of input variables).
 	* minusP.2.plusP: The effect of changing the starting phosphate contions from -Pi, to +Pi
 	on plant shoot phosphate accumulation.
-	* X30uM.2.100uM: The effect of changing the ending phosphate contions from 30 \mu M to 100 $\mu$ M
+	* X30uM.2.100uM: The effect of changing the ending phosphate contions from 30 uM to 100 uM
 	on plant shoot phosphate accumulation.
 	* P1, P2, P3, I1, I2, I3, N1, N2, N3: The effect of each functional bacterial block on
 	plant shoot phosphate accumulation.
@@ -299,6 +299,17 @@ the experimenter. Columns of the data frame are as follows:
 	* log.cfu: log of the c.f.u. per mL.
 	* Replicate: biological replicate batch ID.
 
+* **prediction.error** Theser are the numeric values underlying figure 7F. The numbers are
+the mean different prediction error for the validation experiments and each model. 
+For more details on its calculation please visit the sister repository
+[wheelPi](https://github.com/clingsz/wheelPi). The columns of the data frame are as follows:
+	* LM: The prediction error for the linear model.
+	* INT: The prediction error for the linear model with interactions.
+	* NN: The prediction error for the neural network.
+
+For more details on its calculation please visit the sister repository
+[wheelPi](https://github.com/clingsz/wheelPi). The columns of the data frame are as follows:
+
 * **pre.treatments** Numeric values underlying figure S3B. Directly obtained from the experimenter.
 Columns of the data frame are as follows:
 	* Sample: sample ID.
@@ -316,10 +327,10 @@ For more details on its calculation please visit the sister repository
 	variance.
 	* Variance: The signal or noise variance value for the corresponding phenotype.
 
-
 * **validation.predicted.observed.** These are the numeric values underlying figure 7E. The numbers
 are the predicted and observed plant shoot phosphate accumulation upon synthetic community
-block replacements. The columns of the data frame are as follows:
+block replacements. For more details on its calculation please visit the sister repository
+[wheelPi](https://github.com/clingsz/wheelPi). The columns of the data frame are as follows:
 	* Change.ID: Descriptive string indicating the block replacement.
 	* NN.pred: The predicted change in plant shoot phosphate accumulation by
 	the neural network.
