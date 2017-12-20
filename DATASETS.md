@@ -178,6 +178,16 @@ Below we describe some data objects that contain the numeric values that underli
 figures in the associated manuscript. All the numbers below were calculated from data in
 the above objects and is therefore redundant but it is provided for the sake of completeness.
 
+* **cross.validation.error** These are the numeric values underlying figure 7B. The numbers
+are the *leave-synthetic community-out* cross validation. For more details on its calculation
+please visit the sister repository [wheelPi](https://github.com/clingsz/wheelPi).
+The columns of the data frame are as follows:
+	* Fold: the ID of the synthetic community removed
+	* LM: The cross-validated error for the linear model in the corresponding fold.
+	* INT: The cross-validated error for the linear model with interactions in the
+	corresponding fold.
+	* NN: The cross-validated error for the neural network in the corresponding fold.
+
 * **group.colonization** These are the numeric values underlying figures S6B-C and fig12. They were
 obtained directly from **wheelP.mapsplit** Dataset object. Columns of the data frame are as
 follows:
@@ -228,6 +238,19 @@ directly from Dataset **wheelP.mapsplit**. Columns of the data frame are as foll
 	* Depth: number of reads in the samples.
 	* Usable: number of non plant-derived reads in sample.
 	* MDS1, MDS2, MDS3, MDS4, MDS5, MDS6: Multi-dimensional scaling axes.
+
+* **nn.sensitivity** These are the numeric values underlying figure 7C. The numbers
+are the results of the sensitivity analysis on the different models. For more details on its calculation
+please visit the sister repository [wheelPi](https://github.com/clingsz/wheelPi).
+The columns of the data frame are as follows:
+	* ContextID: ID of the context (i.e. combination of input variables).
+	* minusP.2.plusP: The effect of changing the starting phosphate contions from -Pi, to +Pi
+	on plant shoot phosphate accumulation.
+	* X30uM.2.100uM: The effect of changing the ending phosphate contions from 30 \muM to 100 \muM
+	on plant shoot phosphate accumulation.
+	* P1, P2, P3, I1, I2, I3, N1, N2, N3: The effect of each functional bacterial block on
+	plant shoot phosphate accumulation.
+	* Model: The model that generated the estimate (LM, INT or NN).
 
 * **phen.additivity** Numeric values underlying figure 4 and figure 5B. Calculated directly from
 the **Elongation** and **Pi** data frames. Columns of the data frame are as follows:
