@@ -6,7 +6,7 @@ communities for predicable plant phenotypes".
 This is an R package that is distributed with the aim on ensuring reproducibility.
 The code was designed and tested to work specifically with the data in the package.
 
-For the code that fits the neural network, visit our sister repository
+For the code that fits the neural network visit our sister repository
 [wheelPi](https://github.com/clingsz/wheelPi).
 
 # Installation
