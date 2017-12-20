@@ -22,13 +22,24 @@ Microbial profiling 16S gene sequencing is available at the EBI SRA under access
 
 Other experimental data and data underlying figures is made available here as R package data. It can be accessed after installation using `data(<DATASETNAME>)` in the R console. A full description of all the available datasets can be found at the [DATASETS.md](DATASETS.md) file.
 
+# Scripts
+
+The [scripts directory](inst/scripts/) contains scripts used for analysis in the associated manuscript.
+The scripts follow a naming convention in which a prefix is used to indicate the general set of
+data that they analyze, and they are numbered to indicate they way in which they were run. In some
+cases, scripts with higher numbers are dependent on output from scripts with lower numbers. The prefixes
+are as follow:
+* *gc\_* corresponds to the analysis of *in vitro* bacterial growth curves.
+* *binP\_*
+
 # Referencing
 
 If using the code or data, please reference this repository's URL, as well as the following:
 
-Herrera Paredes S, Gao T, Law TF, Finkel OM, Mucyn T, Texeira PJPL, Salas González I,
-Feltcher ME, Powers MJ, Shank EA, Jones CD, Jojic V, Dangl JL & Castrillo G. "A simplified
-framework for dissecting complex host-microbiota interactions" (2017). *In revision*.
+\*Herrera Paredes S, \*Gao T, Law TF, Finkel OM, Mucyn T, Texeira PJPL, Salas González I,
+Feltcher ME, Powers MJ, Shank EA, Jones CD, Jojic V, Dangl JL & Castrillo G. "Design of 
+synthetic bacterial communities for predicable plant phenotypes" (2017). *In revision*.
+\*Co-first authors.
 
 # Copyright & license
 
