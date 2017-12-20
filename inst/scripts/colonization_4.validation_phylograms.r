@@ -32,7 +32,7 @@ Dat <- subset(Dat, (Experiment %in% c("Validation1","Validation2")),
 Dat <- subset(Dat, Fraction != "T0Agar",
               drop = TRUE, clean = TRUE)
 
-Dat.ord <- collapse_by_taxonomy(Dat,level = 5, sepchar = ";",FUN = sum)
+Dat.ord <- collapse_by_taxonomy(Dat,level = 5, sepchar = ";",FUN = sum, Group = NULL)
 
 temp <- subset(Dat.ord, Fraction == "Root")
 p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
@@ -47,6 +47,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("validation.phylogram.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS12.order.root <- p1$data
+save(figS12.order.root, file = "figuredata/figS12.order.root.rda")
 
 temp <- subset(Dat.ord, Fraction == "Agar")
 p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
@@ -61,6 +64,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("validation.phylogram.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS12.order.agar <- p1$data
+save(figS12.order.agar, file = "figuredata/figS12.order.agar.rda")
 
 temp <- subset(Dat.ord, Fraction == "Inoculum")
 p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
@@ -75,9 +81,11 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("validation.phylogram.inoculum.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS12.order.inoc <- p1$data
+save(figS12.order.inoc, file = "figuredata/figS12.order.inoc.rda")
 
 rm(Dat.ord, p1, temp)
-
 
 #### Blocks
 Blocks <- create_dataset(Tab = collapse_matrix(Dat$Tab,
@@ -100,6 +108,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("validation.phylogram.blocks.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS12.block.root <- p1$data
+save(figS12.block.root, file = "figuredata/figS12.block.root.rda")
 
 temp <- subset(Blocks, Fraction == "Agar")
 p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
@@ -114,6 +125,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("validation.phylogram.blocks.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS12.block.agar <- p1$data
+save(figS12.block.agar, file = "figuredata/figS12.block.agar.rda")
 
 temp <- subset(Blocks, Fraction == "Inoculum")
 p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
@@ -128,3 +142,6 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("validation.phylogram.blocks.inoculum.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS12.block.inoc <- p1$data
+save(figS12.block.inoc, file = "figuredata/figS12.block.inoc.rda")

@@ -21,8 +21,8 @@ library(wheelP)
 # setwd("~/rhizogenomics/github/wheelP/")
 # devtools::document()
 
-setwd("~/rhizogenomics/experiments/2017/today5/")
-outdir <- "~/rhizogenomics/experiments/2017/today5/"
+# setwd("~/rhizogenomics/experiments/2017/today11/")
+# outdir <- "~/rhizogenomics/experiments/2017/today11/"
 
 data(wheelP.mapsplit)
 Dat <- obtain_block_abundances(Dat = wheelP.mapsplit,
@@ -193,6 +193,9 @@ p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
                                   size = 22))
 p1
 ggsave("elongation_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
+dir.create("figuredata/")
+figS7.elongation <- p1$data
+save(figS7.elongation, file = "figuredata/figS7.elongation.rda")
 
 rm(dat,Elongation,Phen,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
 
@@ -334,6 +337,9 @@ p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
                                   size = 22))
 p1
 ggsave("pi_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
+dir.create("figuredata/")
+figS7.pi <- p1$data
+save(figS7.pi, file = "figuredata/figS7.pi.rda")
 
 rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
 
@@ -475,25 +481,11 @@ p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
                                   size = 22))
 p1
 ggsave("area_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
+dir.create("figuredata/")
+figS7.area <- p1$data
+save(figS7.area, file = "figuredata/figS7.area.rda")
 
 rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block, Phen)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ############# totalroot ###############
 data(Pi)
@@ -632,6 +624,9 @@ p1 <- ggplot(dat,aes(x = Estimate, y = Predicted, color = Type)) +
                                   size = 22))
 p1
 ggsave("totalroot_abundance_vs_block_predictions.svg", p1, width = 7, height = 7)
+dir.create("figuredata/")
+figS7.totalroot <- p1$data
+save(figS7.totalroot, file = "figuredata/figS7.totalroot.rda")
 
 rm(dat,Pred.abun,Pred.block, p1, Res.abun, Res.sc, Res.block)
 

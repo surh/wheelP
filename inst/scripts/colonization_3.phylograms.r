@@ -17,7 +17,7 @@
 
 library(AMOR)
 library(wheelP)
-# setwd("~/rhizogenomics/experiments/2017/today3/")
+# setwd("~/rhizogenomics/experiments/2017/today11/")
 
 data(wheelP.mapsplit)
 Dat <- wheelP.mapsplit
@@ -30,7 +30,7 @@ Dat <- clean(Dat)
 Dat <- subset(Dat, !(Experiment %in% c("Validation1","Validation2")),
               drop = TRUE, clean = TRUE)
 
-Dat.ord <- collapse_by_taxonomy(Dat,level = 5, sepchar = ";",FUN = sum)
+Dat.ord <- collapse_by_taxonomy(Dat,level = 5, sepchar = ";",FUN = sum, Group = NULL)
 
 temp <- subset(Dat.ord, Pre.Pi == "+Pi,0.5%Suc" &
                  Pos.Pi == "100 uM,0%Suc" &
@@ -47,6 +47,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("plusP_100uM.phylogram.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.plusP100.root <- p1$data
+save(figS6B.plusP100.root, file = "figuredata/figS6B.plusP100.root.rda")
 
 temp <- subset(Dat.ord, Pre.Pi == "+Pi,0.5%Suc" &
                  Pos.Pi == "100 uM,0%Suc" &
@@ -63,6 +66,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("plusP_100uM.phylogram.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.plusP100.agar <- p1$data
+save(figS6B.plusP100.agar, file = "figuredata/figS6B.plusP100.agar.rda")
 
 temp <- subset(Dat.ord, Pre.Pi == "+Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -79,6 +85,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("plusP_30uM.phylogram.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.plusP30.root <- p1$data
+save(figS6B.plusP30.root, file = "figuredata/figS6B.plusP30.root.rda")
 
 temp <- subset(Dat.ord, Pre.Pi == "+Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -95,6 +104,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("plusP_30uM.phylogram.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.plusP30.agar <- p1$data
+save(figS6B.plusP30.agar, file = "figuredata/figS6B.plusP30.agar.rda")
 
 temp <- subset(Dat.ord, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "100 uM,0%Suc" &
@@ -111,6 +123,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("minusP_100uM.phylogram.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.minusP100.root <- p1$data
+save(figS6B.minusP100.root, file = "figuredata/figS6B.minusP100.root.rda")
 
 temp <- subset(Dat.ord, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "100 uM,0%Suc" &
@@ -127,6 +142,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("minusP_100uM.phylogram.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.minusP100.agar <- p1$data
+save(figS6B.minusP100.agar, file = "figuredata/figS6B.minusP100.agar.rda")
 
 temp <- subset(Dat.ord, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -143,6 +161,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8,space = "fixed") +
         strip.background = element_blank())
 p1
 ggsave("minusP_30uM.phylogram.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.minusP30.root <- p1$data
+save(figS6B.minusP30.root, file = "figuredata/figS6B.minusP30.root.rda")
 
 temp <- subset(Dat.ord, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -159,6 +180,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 8,space = "fixed") +
         strip.background = element_blank())
 p1
 ggsave("minusP_30uM.phylogram.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.minusP30.agar <- p1$data
+save(figS6B.minusP30.agar, file = "figuredata/figS6B.minusP30.agar.rda")
 
 rm(Dat.ord, p1, temp)
 
@@ -184,7 +208,7 @@ Theo <- create_dataset(Tab = Tab,
                                                            levels = levels(Dat$Map$Bacteria)),
                                         row.names = syncoms),
                        Tax = Tax)
-Theo.ord <- collapse_by_taxonomy(Theo,level = 5, sepchar = ";",FUN = sum)
+Theo.ord <- collapse_by_taxonomy(Theo,level = 5, sepchar = ";",FUN = sum, Group = NULL)
 
 p1 <- phylogram(Theo.ord,facet = ~ Bacteria,nrow.legend = 8) +
   scale_fill_brewer(palette = "Paired") +
@@ -198,6 +222,9 @@ p1 <- phylogram(Theo.ord,facet = ~ Bacteria,nrow.legend = 8) +
         strip.background = element_blank())
 p1
 ggsave("theoretical.phylogram.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6B.theoretical <- p1$data
+save(figS6B.theoretical, file = "figuredata/figS6B.theoretical.rda")
 
 rm(Tab,Tax,Tax.colonization,b1,b2,p1,syncom,syncoms,Theo,Theo.ord)
 
@@ -223,6 +250,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("plusP_100uM.phylogram.blocks.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.plusP100.root <- p1$data
+save(figS6C.plusP100.root, file = "figuredata/figS6C.plusP100.root.rda")
 
 temp <- subset(Blocks, Pre.Pi == "+Pi,0.5%Suc" &
                  Pos.Pi == "100 uM,0%Suc" &
@@ -239,6 +269,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("plusP_100uM.phylogram.blocks.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.plusP100.agar <- p1$data
+save(figS6C.plusP100.agar, file = "figuredata/figS6C.plusP100.agar.rda")
 
 temp <- subset(Blocks, Pre.Pi == "+Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -255,6 +288,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("plusP_30uM.phylogram.blocks.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.plusP30.root <- p1$data
+save(figS6C.plusP30.root, file = "figuredata/figS6C.plusP30.root.rda")
 
 temp <- subset(Blocks, Pre.Pi == "+Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -271,6 +307,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("plusP_30uM.phylogram.blocks.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.plusP30.agar <- p1$data
+save(figS6C.plusP30.agar, file = "figuredata/figS6C.plusP30.agar.rda")
 
 temp <- subset(Blocks, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "100 uM,0%Suc" &
@@ -287,6 +326,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("minusP_100uM.phylogram.blocks.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.minusP100.root <- p1$data
+save(figS6C.minusP100.root, file = "figuredata/figS6C.minusP100.root.rda")
 
 temp <- subset(Blocks, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "100 uM,0%Suc" &
@@ -303,6 +345,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("minusP_100uM.phylogram.blocks.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.minusP100.agar <- p1$data
+save(figS6C.minusP100.agar, file = "figuredata/figS6C.minusP100.agar.rda")
 
 temp <- subset(Blocks, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -319,6 +364,9 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("minusP_30uM.phylogram.blocks.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.minusP30.root <- p1$data
+save(figS6C.minusP30.root, file = "figuredata/figS6C.minusP30.root.rda")
 
 temp <- subset(Blocks, Pre.Pi == "-Pi,0.5%Suc" &
                  Pos.Pi == "30 uM,0%Suc" &
@@ -335,5 +383,8 @@ p1 <- phylogram(temp,facet = ~ Bacteria,nrow.legend = 9) +
         strip.background = element_blank())
 p1
 ggsave("minusP_30uM.phylogram.blocks.agar.svg",p1, width = 14, height = 4)
+dir.create("figuredata/")
+figS6C.minusP30.agar <- p1$data
+save(figS6C.minusP30.agar, file = "figuredata/figS6C.minusP30.agar.rda")
 
 rm(p1,Blocks,temp)
