@@ -47,7 +47,7 @@ If using the code or data, please reference this repository's URL, as well as th
 
 \*Herrera Paredes S, \*Gao T, Law TF, Finkel OM, Mucyn T, Texeira PJPL, Salas González I,
 Feltcher ME, Powers MJ, Shank EA, Jones CD, Jojic V, Dangl JL & Castrillo G. "Design of 
-synthetic bacterial communities for predicable plant phenotypes" (2017). *In revision*.
+synthetic bacterial communities for predicable plant phenotypes" (2017). *In press.
 \*Co-first authors.
 
 # Copyright & license
