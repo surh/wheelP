@@ -29,7 +29,7 @@ the main effects. If FALSE, a linear model with the variables indicated
 by keep.vars will be produced.}
 }
 \value{
-Returns an object of class 'lm', see \link{lm} for more info
+Returns an object of class 'lm', see \code{\link{lm}} for more info
 }
 \description{
 Fits a single linear model for all data in a specific condition and
@@ -47,6 +47,9 @@ in the linear models.
 
 Only the data that matches where Dat$StartP == cond1 & Dat$EndP == cond2 will
 be used to fit the model. The rest is discarded.
+}
+\seealso{
+\code{\link{lm}}
 }
 \author{
 Sur Herrera Paredes
