@@ -16,6 +16,21 @@
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Distance to data.frame
+#' 
+#' Convets an object of class "dist" into an
+#' obejct of class "data.frame" where each row is
+#' a pairwise distance
+#' 
+#' @param inDist An object of class "dist". See \code{\link{dist}} for
+#' more info
+#' 
+#' @return A data.frame where each row is a pairwise distance
+#' 
+#' @author Sur Herrera Paredes
+#' 
+#' @seealso \code{\link{dist}}
+#' 
+#' @keywords utilities
 #'
 #' @export
 dist2df <- function(inDist){

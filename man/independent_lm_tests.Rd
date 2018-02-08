@@ -8,22 +8,41 @@ independent_lm_tests(Dat, f1, strain, StartP.levels = c("minusP", "plusP"),
   EndP.levels = c("100uM", "30uM"))
 }
 \arguments{
-\item{Dat}{data.frame from one bacteria}
+\item{Dat}{A data.frame containing the data of one bacterial treatment.
+Unsupported behaviour would occur if more than one bacterial treatment is
+included. The data.frame must contain columns: 'Bacteria', 'StartP' and
+'EndP'. The 'Bacteria' column must be either a factor or a character vector
+containing only values 'No Bacteria' and '+Bacteria'}
 
-\item{f1}{formula for test}
+\item{f1}{formula for test. It will be passed to the lm function}
 
-\item{strain}{strain name to test}
+\item{strain}{A character string, indicating strain name.}
 
 \item{StartP.levels}{new names for StartP levels}
 
-\item{EndP.lvels}{new names for endP levels.}
+\item{EndP.lvels}{new names for EndP levels.}
 }
 \value{
-A list
+A list of data frames. Each data.frame contains a column called 'Strain'
+which indicates the strain ID. An also contains m more columns
+(m = length(StartP.levels)*lenght(EndP.levels)). Each element of the list stores the
+either the coefficiennt for the bacterial treatment (Res), its p-value (Pval), or
+its standard error (SE).
 }
 \description{
 Internal function.
 }
+\details{
+This functions takes the data from one bacterial treatment makes
+an independent linear model for all observation on each combination 
+of levels between two variables.
+}
+\seealso{
+\code{\link{lm}}
+}
 \author{
 Sur Herrera Paredes
 }
+\keyword{binP}
+\keyword{syncom}
+\keyword{utilities}
