@@ -24,6 +24,8 @@
 #' @param inDist An object of class "dist". See \code{\link{dist}} for
 #' more info
 #' 
+#' @return A data.frame where each row is a pairwise distance
+#' 
 #' @author Sur Herrera Paredes
 #' 
 #' @seealso \code{\link{dist}}

@@ -10,6 +10,9 @@ dist2df(inDist)
 \item{inDist}{An object of class "dist". See \code{\link{dist}} for
 more info}
 }
+\value{
+A data.frame where each row is a pairwise distance
+}
 \description{
 Convets an object of class "dist" into an
 obejct of class "data.frame" where each row is

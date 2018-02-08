@@ -18,14 +18,30 @@
 #' Test all combinations of levels
 #'
 #' Internal function.
+#' 
+#' This functions takes the data from one bacterial treatment makes
+#' an independent linear model for all observation on each combination 
+#' of levels between two variables.
 #'
-#' @param Dat data.frame from one bacteria
-#' @param f1 formula for test
-#' @param strain strain name to test
+#' @param Dat A data.frame containing the data of one bacterial treatment.
+#' Unsupported behaviour would occur if more than one bacterial treatment is
+#' included. The data.frame must contain columns: 'Bacteria', 'StartP' and
+#' 'EndP'. The 'Bacteria' column must be either a factor or a character vector
+#' containing only values 'No Bacteria' and '+Bacteria'
+#' @param f1 formula for test. It will be passed to the lm function
+#' @param strain A character string, indicating strain name.
 #' @param StartP.levels new names for StartP levels
-#' @param EndP.lvels new names for endP levels.
+#' @param EndP.lvels new names for EndP levels.
 #'
-#' @return A list
+#' @return A list of data frames. Each data.frame contains a column called 'Strain'
+#' which indicates the strain ID. An also contains m more columns
+#' (m = length(StartP.levels)*lenght(EndP.levels)). Each element of the list stores the
+#' either the coefficiennt for the bacterial treatment (Res), its p-value (Pval), or
+#' its standard error (SE).
+#' 
+#' @seealso \code{\link{lm}}
+#' 
+#' @keywords utilities syncom binP
 #'
 #' @author Sur Herrera Paredes
 independent_lm_tests <- function(Dat,f1,strain,StartP.levels = c("minusP","plusP"),
