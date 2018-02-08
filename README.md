@@ -1,3 +1,5 @@
+[![DOI](https://img.shields.io/badge/DOI-10.1371%2Fjournal.pbio.2003962-blue.svg)](https://doi.org/10.1371/journal.pbio.2003962)
+
 # wheelP
 
 Code and data for analysis described in the manuscript: "Design of synthetic bacterial
@@ -47,8 +49,7 @@ If using the code or data, please reference this repository's URL, as well as th
 
 \*Herrera Paredes S, \*Gao T, Law TF, Finkel OM, Mucyn T, Texeira PJPL, Salas González I,
 Feltcher ME, Powers MJ, Shank EA, Jones CD, Jojic V, Dangl JL & Castrillo G. "Design of 
-synthetic bacterial communities for predicable plant phenotypes" (2017). *In press.
-\*Co-first authors.
+synthetic bacterial communities for predicable plant phenotypes" (2017). *In press. doi: 10.1371/journal.pbio.2003962. \*Co-first authors.
 
 # Copyright & license
 
