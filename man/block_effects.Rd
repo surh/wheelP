@@ -28,6 +28,9 @@ Dat should be kept as covariates in the model}
 the main effects. If FALSE, a linear model with the variables indicated
 by keep.vars will be produced.}
 }
+\value{
+Returns an object of class 'lm', see \link{lm} for more info
+}
 \description{
 Fits a single linear model for all data in a specific condition and
 estimates the main effect of each abcterial block
@@ -48,3 +51,4 @@ be used to fit the model. The rest is discarded.
 \author{
 Sur Herrera Paredes
 }
+\keyword{syncom}

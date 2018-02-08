@@ -20,33 +20,27 @@
 #' Combine a list of Datasates.
 #'
 #' All datasets must have the same variables in the same order
-#' in their Map attribute. Redundant samples (ie samples in more
-#' one dataset), have their counts added.
+#' in their Map attribute. Redundant samples (i.e. samples with the
+#' same ID in more than one dataset), have their counts added.
 #' Taxa neeed not be the same in all datasets. The union of taxa
 #' will be used as long as all the intersections are identical
 #' in the Tax elements. Taxa missing from a specific dataset
 #' will be added with count zero for the samples in that dataset.
 #'
-#' There might be some issues when map is not null and there are
+#' IMPORTANT: There might be some issues when map is not null and there are
 #' redundant samples
 #'
 #' @param datasets either a single Dataset object or a list
-#' of dataset objects
+#' of dataset objects. See \code{\link{create_dataset}} for more info.
+#' 
+#' @author Sur Herrera Paredes
+#' 
+#' @keywords utilities
+#' 
+#' @seealso \code{\link{create_dataset}}
 #'
 #' @export
 combine_datasets <- function(datasets){
-
-
-  # Tab1$Map <- data.frame(x = 1:length(samples(Tab1)), y = 2, row.names = samples(Tab1))
-  # Tab2$Map <- data.frame(x = 1:length(samples(Tab2)), y = 2, row.names = samples(Tab2))
-  #
-  # Tab1$Map <- NULL
-  # Tab2$Map <- NULL
-
-  # datasets <- list(Tab2,Tab4)
-  # datasets <- list(DAT,dat)
-
-
 
   if(class(datasets) == "Dataset"){
     datasets <- list(datasets)

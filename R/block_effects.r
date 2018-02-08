@@ -47,6 +47,12 @@
 #' the main effects. If FALSE, a linear model with the variables indicated
 #' by keep.vars will be produced.
 #' 
+#' @return Returns an object of class 'lm', see \code{\link{lm}} for more info
+#' 
+#' @seealso \code{\link{lm}}
+#' 
+#' @keywords syncom
+#' 
 #' @author Sur Herrera Paredes
 #'
 #' @export
