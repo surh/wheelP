@@ -7,6 +7,44 @@
 block_effects(Dat, var.name, cond1, cond2, keep.vars = c("Plate",
   "Experiment"), create.design = TRUE)
 }
+\arguments{
+\item{Dat}{A data.frame. Must contain the following columns: 'Bacteria',
+'StartP' and 'EndP'. It must further contain a column matching the var.name
+and keep.var parameters.}
+
+\item{var.name}{A string character indicating the name of the variable in
+Dat that has the lef-hand side of the linear model (i.e. the dependent variable)}
+
+\item{cond1}{The value for the 'StartP' variable in Dat. Only data where
+Dat$StartP == cond1 will be kept.}
+
+\item{cond2}{The value for the 'EndP' variable in Dat. Only data where
+Dat$EndP == cond2 will be kept.}
+
+\item{keep.vars}{A vector of character objects indicating which variables from
+Dat should be kept as covariates in the model}
+
+\item{create.design}{logcial indicats whether the desing must be created for
+the main effects. If FALSE, a linear model with the variables indicated
+by keep.vars will be produced.}
+}
 \description{
-Estimate block main effects
+Fits a single linear model for all data in a specific condition and
+estimates the main effect of each abcterial block
+}
+\details{
+This function will create a design matrix based on SynCom names. Therefore,
+it assumes that the SynCom names are named \emph{B#B#}, where 'B' is replaced
+by the functiona group type ('P', "I' or 'N') and # is the block number
+within each functional type. It assumes that exactly nine blocks (3 per functional
+type) exist.
+
+The function will also include any variable named in keep.vars as a covariate
+in the linear models.
+
+Only the data that matches where Dat$StartP == cond1 & Dat$EndP == cond2 will
+be used to fit the model. The rest is discarded.
+}
+\author{
+Sur Herrera Paredes
 }
