@@ -8,6 +8,24 @@ obtain_block_abundances(Dat, varnames = c("Bacteria", "Replicate",
   "Experiment", "Pre.Pi", "Pos.Pi"), taxa.group = "Block", sep = "_",
   taxa2rm = "contaminant")
 }
+\arguments{
+\item{Dat}{a dataset object}
+
+\item{varnames}{Vector of character strings that name the variables
+to be used to pool samples. Must correspond to variables in
+the Map attribute of Dat.}
+
+\item{taxa.group}{Character string indicating the variable for
+collapsing taxa.}
+
+\item{sep}{Separator character for creating composite variables.}
+
+\item{taxa2rm}{Taxa IDs to remove.}
+}
+\value{
+A data frame that contains the average abundance by taxa group
+per group of samples.
+}
 \description{
 Takes a Dataset object, pools samples and taxa according to
 specified variables, and returns  adata frame that contains
@@ -16,3 +34,5 @@ the average abundance by taxa group per group of samples
 \author{
 Sur Herrera Paredes
 }
+\keyword{colonization}
+\keyword{syncom}

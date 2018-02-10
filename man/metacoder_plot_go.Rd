@@ -33,6 +33,9 @@ package, but any other simular object can be used.}
 \item{num.changed}{Minimum number of genes in an annotation category
 fir that annotation to be included.}
 }
+\value{
+The data used by \code{link{heat_tree}} function.
+}
 \description{
 Creates a metacoder network plot from gene ontologies. Figures from this function
 where not included in final manuscript.
