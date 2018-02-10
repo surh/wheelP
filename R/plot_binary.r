@@ -26,9 +26,11 @@
 #' was added or not.
 #' @param xbreaks vector of values to be indicated in x-axis.
 #'
-#' @return ggplot2 object
+#' @return A ggplot2 plot object.
 #'
 #' @author Sur Herrera Paredes
+#' 
+#' @keywords binP plots
 #'
 #' @export
 plot_binary <- function (Dat,xbreaks = c(1, 2, 5, 10, 20, 50)){

@@ -16,6 +16,10 @@ merge_phen_and_abun(Phen, abun, columns, varnames = c("Bacteria",
 variables to use to combine datasets. Rows where the exact same
 combination of values for all variables occur are considered identical.}
 }
+\value{
+A data.frame where phenotypes and abundances are
+matched.
+}
 \description{
 Merge two data frames containing plant phenotypic data
 and bacterial relative abundances
