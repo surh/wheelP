@@ -14,10 +14,31 @@
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Metacoder plot
+#' 
+#' Creates a metacoder heat tree plot. Normally it should be called
+#' throught the \code{\ling{metacoder_plot_go}}.
 #'
-#' Requires you to load metacoder package, otherwise names not print
-#'
-#' @author From metacoder paper
+#' Requires you to load metacoder package, otherwise names do not print.
+#' 
+#' @param file A filename of the gene ontologies to include. The function
+#' \code{\linl{metacoder_plot_go}} generates this file and passes it to this
+#' function automatically.
+#' @param col Which column to use for coloring.
+#' @param output_file Name of the file to save the plot.
+#' @param n.supertaxa How much to extend the network fri the root node.
+#' @param num.changed Minimun number of genes with a given annotation
+#' to include that annotation
+#' @oaram min_fdr False discovery rate threshold
+#' 
+#' @author Code from metacoder paper with small adaptations by Sur Herrera Paredes
+#' 
+#' @references Foster ZSL, Sharpton TJ, Grünwald NJ (2017) Metacoder:
+#' An R package for visualization and manipulation of community taxonomic diversity data.
+#' PLoS Comput Biol 13(2): e1005404. https://doi.org/10.1371/journal.pcbi.1005404
+#' 
+#' @keywords rna plots
+#' 
+#' @seealso \code{\link{metacoder_plot_go}} \code{\link{heat_tree}}
 #'
 #' @importFrom magrittr "%>%"
 #'
