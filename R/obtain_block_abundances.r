@@ -20,8 +20,19 @@
 #' Takes a Dataset object, pools samples and taxa according to
 #' specified variables, and returns  adata frame that contains
 #' the average abundance by taxa group per group of samples
+#' 
+#' @param Dat a dataset object
+#' @param varnames Vector of character strings that name the variables
+#' to be used to pool samples. Must correspond to variables in
+#' the Map attribute of Dat.
+#' @param taxa.group Character string indicating the variable for
+#' collapsing taxa.
+#' @param sep Separator character for creating composite variables.
+#' @param taxa2rm Taxa IDs to remove.
 #'
 #' @author Sur Herrera Paredes
+#' 
+#' @keywords colonization syncom
 #'
 #' @export
 obtain_block_abundances <- function(Dat, varnames = c("Bacteria","Replicate","Experiment","Pre.Pi", "Pos.Pi"),
