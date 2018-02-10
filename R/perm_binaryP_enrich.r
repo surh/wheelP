@@ -27,7 +27,7 @@
 #' @param max.val Maximum value for log fold chance
 #' @param min.val maximum value for log fold change
 #'
-#' @return vector of p-values
+#' @return A vector of p-values
 #'
 #' @author Sur Herrera Paredes
 #' 

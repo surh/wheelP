@@ -30,6 +30,8 @@
 #' to include that annotation
 #' @oaram min_fdr False discovery rate threshold
 #' 
+#' @return The data from the \code{\ling{heat_tree}} function.
+#' 
 #' @author Code from metacoder paper with small adaptations by Sur Herrera Paredes
 #' 
 #' @references Foster ZSL, Sharpton TJ, Grünwald NJ (2017) Metacoder:

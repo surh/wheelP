@@ -40,6 +40,8 @@
 #' @param n.supertaxa Number of levels to extend the tree.
 #' @param num.changed Minimum number of genes in an annotation category
 #' fir that annotation to be included.
+#' 
+#' @return The data used by \code{link{heat_tree}} function.
 #'
 #' @author Code from metacoder paper with small adaptations by Sur Herrera Paredes
 #' 

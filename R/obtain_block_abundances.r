@@ -29,6 +29,9 @@
 #' collapsing taxa.
 #' @param sep Separator character for creating composite variables.
 #' @param taxa2rm Taxa IDs to remove.
+#' 
+#' @return A data frame that contains the average abundance by taxa group
+#' per group of samples.
 #'
 #' @author Sur Herrera Paredes
 #' 

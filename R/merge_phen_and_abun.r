@@ -37,6 +37,9 @@
 #' @author Sur Herrera Paredes
 #' 
 #' @keywords utils syncom colonization
+#' 
+#' @return A data.frame where phenotypes and abundances are
+#' matched.
 #'
 #' @export
 merge_phen_and_abun <- function(Phen, abun, columns,
