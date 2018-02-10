@@ -8,9 +8,50 @@ metacoder_plot_go(dat, output_folder = "./", output_format = "svg",
   min_fdr = 0.01, type = GO.db::GOBPPARENTS, prefix = "go",
   n.supertaxa = 9, num.changed = 3)
 }
+\arguments{
+\item{dat}{A data frame containing the results of differential expression analysis on
+edgeR. The data frame is the result of performing hypothesis testing, for example
+with the likelihood ratio test (i.e. function \code{\link{glmLRT}}).}
+
+\item{output_folder}{Charachter string indicating the directory to store the
+plots.}
+
+\item{output_format}{Format of the image to save. It must be allowed
+by the \code{\link{heat_tree}} function.}
+
+\item{min_fdr}{False discovery rate threshold to filter genes. Only genes
+with a smaller fdr and their annotations will be included.}
+
+\item{type}{This must be an object that specifies the parents of each
+annotation terms. Default is object GOBPPARENTS fromthe GO.db bioconductor
+package, but any other simular object can be used.}
+
+\item{prefix}{Character string. Prefix for file names.}
+
+\item{n.supertaxa}{Number of levels to extend the tree.}
+
+\item{num.changed}{Minimum number of genes in an annotation category
+fir that annotation to be included.}
+}
 \description{
-Plot GO from edgeR
+Creates a metacoder network plot from gene ontologies. Figures from this function
+where not included in final manuscript.
+}
+\details{
+The script takes a list of differentially expressed genes and their GO annotations
+and creates a tree representing the gene ontologies present and color codes it by
+the overal log(fold-change) im expression/
+}
+\references{
+Foster ZSL, Sharpton TJ, Grünwald NJ (2017) Metacoder:
+An R package for visualization and manipulation of community taxonomic diversity data.
+PLoS Comput Biol 13(2): e1005404. https://doi.org/10.1371/journal.pcbi.1005404
+}
+\seealso{
+\code{\link{parse_tax_and_plot}} \code{\link{heat_tree}}
 }
 \author{
-from metacoder paper
+Code from metacoder paper with small adaptations by Sur Herrera Paredes
 }
+\keyword{plots}
+\keyword{rna}
