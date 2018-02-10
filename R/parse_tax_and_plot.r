@@ -16,21 +16,21 @@
 #' Metacoder plot
 #' 
 #' Creates a metacoder heat tree plot. Normally it should be called
-#' throught the \code{\ling{metacoder_plot_go}}.
+#' throught the \code{\link{metacoder_plot_go}}.
 #'
 #' Requires you to load metacoder package, otherwise names do not print.
 #' 
 #' @param file A filename of the gene ontologies to include. The function
-#' \code{\linl{metacoder_plot_go}} generates this file and passes it to this
+#' \code{\link{metacoder_plot_go}} generates this file and passes it to this
 #' function automatically.
 #' @param col Which column to use for coloring.
 #' @param output_file Name of the file to save the plot.
 #' @param n.supertaxa How much to extend the network fri the root node.
 #' @param num.changed Minimun number of genes with a given annotation
 #' to include that annotation
-#' @oaram min_fdr False discovery rate threshold
+#' @param min_fdr False discovery rate threshold
 #' 
-#' @return The data from the \code{\ling{heat_tree}} function.
+#' @return The data from the \code{\link{heat_tree}} function.
 #' 
 #' @author Code from metacoder paper with small adaptations by Sur Herrera Paredes
 #' 

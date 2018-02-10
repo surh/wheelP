@@ -9,7 +9,7 @@ parse_tax_and_plot(file, col, output_file = output_file,
 }
 \arguments{
 \item{file}{A filename of the gene ontologies to include. The function
-\code{\linl{metacoder_plot_go}} generates this file and passes it to this
+\code{\link{metacoder_plot_go}} generates this file and passes it to this
 function automatically.}
 
 \item{col}{Which column to use for coloring.}
@@ -20,13 +20,15 @@ function automatically.}
 
 \item{num.changed}{Minimun number of genes with a given annotation
 to include that annotation}
+
+\item{min_fdr}{False discovery rate threshold}
 }
 \value{
-The data from the \code{\ling{heat_tree}} function.
+The data from the \code{\link{heat_tree}} function.
 }
 \description{
 Creates a metacoder heat tree plot. Normally it should be called
-throught the \code{\ling{metacoder_plot_go}}.
+throught the \code{\link{metacoder_plot_go}}.
 }
 \details{
 Requires you to load metacoder package, otherwise names do not print.
