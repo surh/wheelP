@@ -7,9 +7,42 @@
 parse_tax_and_plot(file, col, output_file = output_file,
   n.supertaxa = n.supertaxa, num.changed = num.changed, min_fdr = min_fdr)
 }
+\arguments{
+\item{file}{A filename of the gene ontologies to include. The function
+\code{\link{metacoder_plot_go}} generates this file and passes it to this
+function automatically.}
+
+\item{col}{Which column to use for coloring.}
+
+\item{output_file}{Name of the file to save the plot.}
+
+\item{n.supertaxa}{How much to extend the network fri the root node.}
+
+\item{num.changed}{Minimun number of genes with a given annotation
+to include that annotation}
+
+\item{min_fdr}{False discovery rate threshold}
+}
+\value{
+The data from the \code{\link{heat_tree}} function.
+}
 \description{
-Requires you to load metacoder package, otherwise names not print
+Creates a metacoder heat tree plot. Normally it should be called
+throught the \code{\link{metacoder_plot_go}}.
+}
+\details{
+Requires you to load metacoder package, otherwise names do not print.
+}
+\references{
+Foster ZSL, Sharpton TJ, Grünwald NJ (2017) Metacoder:
+An R package for visualization and manipulation of community taxonomic diversity data.
+PLoS Comput Biol 13(2): e1005404. https://doi.org/10.1371/journal.pcbi.1005404
+}
+\seealso{
+\code{\link{metacoder_plot_go}} \code{\link{heat_tree}}
 }
 \author{
-From metacoder paper
+Code from metacoder paper with small adaptations by Sur Herrera Paredes
 }
+\keyword{plots}
+\keyword{rna}

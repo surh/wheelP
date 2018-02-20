@@ -7,6 +7,35 @@
 merge_phen_and_abun(Phen, abun, columns, varnames = c("Bacteria",
   "Experiment", "StartP", "EndP"))
 }
-\description{
-Merge phenotype data with relative abundances of blocks
+\arguments{
+\item{Phen}{A data frame with phenotypic information}
+
+\item{abun}{A data frame with abundance information}
+
+\item{varnames}{Vector of charachter strings indicating which
+variables to use to combine datasets. Rows where the exact same
+combination of values for all variables occur are considered identical.}
 }
+\value{
+A data.frame where phenotypes and abundances are
+matched.
+}
+\description{
+Merge two data frames containing plant phenotypic data
+and bacterial relative abundances
+}
+\details{
+The function takes a list of variables that when combined must
+uniqueley identify each row of both data frames. Those variable smust exist
+in both data frames.
+
+It then constructs an index that it uses to match the columns. Abundance
+data can be missing for some phenotypic observations, in which case
+it will be replaced by zero.
+}
+\author{
+Sur Herrera Paredes
+}
+\keyword{colonization}
+\keyword{syncom}
+\keyword{utils}

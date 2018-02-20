@@ -15,17 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with wheelP.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Enrichment of phosphate modulators
+#' Permutation enrichment test of phosphate modulators
+#' 
+#' Tests whether the number of strains that modulate
+#' plant shoot phosphate accumulation is signigicantly
+#' enriched for positive or negative modulators.
 #'
 #' @param test result from test_all_strains
 #' @param N number of permutations
-#' @param qval.thres q-valuethreshold
+#' @param qval.thres q-value threshold
 #' @param max.val Maximum value for log fold chance
 #' @param min.val maximum value for log fold change
 #'
-#' @return vector of p-values
+#' @return A vector of p-values
 #'
 #' @author Sur Herrera Paredes
+#' 
+#' @seealso \code{\link{test_all_strains}}
+#' 
+#' @keywords binP
 #'
 #' @export
 perm_binaryP_enrich <- function(test, N = 999, qval.thres = 0.1, max.val = Inf, min.val = -Inf){

@@ -15,7 +15,7 @@ was added or not.}
 \item{xbreaks}{vector of values to be indicated in x-axis.}
 }
 \value{
-ggplot2 object
+A ggplot2 plot object.
 }
 \description{
 Generates density plot of Pi content in four conditions with
@@ -24,3 +24,5 @@ and without bacteria
 \author{
 Sur Herrera Paredes
 }
+\keyword{binP}
+\keyword{plots}

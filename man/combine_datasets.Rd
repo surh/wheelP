@@ -8,20 +8,27 @@ combine_datasets(datasets)
 }
 \arguments{
 \item{datasets}{either a single Dataset object or a list
-of dataset objects}
+of dataset objects. See \code{\link{create_dataset}} for more info.}
 }
 \description{
 Combine a list of Datasates.
 }
 \details{
 All datasets must have the same variables in the same order
-in their Map attribute. Redundant samples (ie samples in more
-one dataset), have their counts added.
+in their Map attribute. Redundant samples (i.e. samples with the
+same ID in more than one dataset), have their counts added.
 Taxa neeed not be the same in all datasets. The union of taxa
 will be used as long as all the intersections are identical
 in the Tax elements. Taxa missing from a specific dataset
 will be added with count zero for the samples in that dataset.
 
-There might be some issues when map is not null and there are
+IMPORTANT: There might be some issues when map is not null and there are
 redundant samples
 }
+\seealso{
+\code{\link{create_dataset}}
+}
+\author{
+Sur Herrera Paredes
+}
+\keyword{utilities}
